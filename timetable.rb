@@ -1,6 +1,9 @@
 require 'nokogiri'
 require 'open-uri'
+require 'logger'
 
+
+logger = Logger.new(STDOUT)
 def timetable(doc, month = 0, day = 11)
   tr = doc[2..12]
   lectures = []
