@@ -42,9 +42,9 @@ post '/callback' do
       when Line::Bot::Event::MessageType::Text
         msg = nil
         t = Time.new()
-        if event.message['text'] =~ /授業/ and event.message['text'] =~ /今日/
+        if (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間割/) and event.message['text'] =~ /今日/
           msg = op(t.month, t.day)
-        elsif event.message['text'] =~ /授業/ and event.message['text'] =~ /明日/
+        elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間割/) and event.message['text'] =~ /明日/
           msg = op(t.month, t.day + 1)
         end
         

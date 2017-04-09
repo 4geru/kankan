@@ -23,8 +23,6 @@ def getHP(month = 4, day = 1)
   month = (month.to_i + 8) % 12
   day = day.to_i
   url = 'http://www.shiga-med.ac.jp/~hqgaku/SchoolCalendar/igaku/3/calendar_d.html'
-  #page = URI.parse(url).read
-  #doc = Nokogiri::HTML.parse(page, nil, 'euc-jp')
 
   html_txt = open(url).read
   html_txt_utf8 = html_txt.kconv(Kconv::UTF8, Kconv::EUC)
