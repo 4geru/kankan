@@ -5,10 +5,14 @@ require './models/count.rb'
 require 'nokogiri'
 require 'open-uri'
 require 'line/bot'
+require 'logger'
 require './timetable'
 
+logger = Logger.new(STDOUT)
+
 get '/' do
-  'hello'
+  t = Time.new()
+  msg = op(t.month, t.day)
 end
 
 def client
@@ -34,9 +38,10 @@ post '/callback' do
       when Line::Bot::Event::MessageType::Text
         msg = nil
         if event.message['text'] =~ /授業/ and event.message['text'] =~ /今日/
-          p 'ok'
+          logger.info('ok')
           t = Time.new()
           msg = op(t.month, t.day)
+          logger.info('make reply message')
         end
         unless msg
           message = {
@@ -44,6 +49,7 @@ post '/callback' do
             text: msg
           }
           client.reply_message(event['replyToken'], message)
+          logger.info('replied message')
         end
       end
     end
