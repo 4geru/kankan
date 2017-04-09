@@ -65,15 +65,16 @@ post '/callback' do
           msg = op(t.month, t.day)
         elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間割/) and event.message['text'] =~ /明日/
           msg = op(t.month, t.day + 1)
-        elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間割/) and event.message['text'] =~ /\//
+        elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間割/) and event.message['text'] =~ /(\d{1,2})\/(\d{1,2})/
           m = str.match(/(\d{1,2})\/(\d{1,2})/)
           month = m[1]
           day = m[2]
+          msg = "#{m[1]}, #{m[2]}"
           begin
             t = Time.parse(t.year.to_s + '/' + month.to_s + '/'  + day.to_s + ' 00:00:00')
             msg = op(t.month, t.day + 1)
           rescue => e
-            msg = '日付の入力を治してください 月/日'
+            msg = '日付の入力を直してください 月/日'
           end
         end
         
