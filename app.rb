@@ -40,7 +40,7 @@ post '/callback' do
         if event.message['text'] =~ /授業/ and event.message['text'] =~ /今日/
           logger.info('ok')
           t = Time.new()
-          msg = op(t.month, t.day)
+          msg = op(4,10)#op(t.month, t.day)
           logger.info('make reply message')
         end
         unless msg

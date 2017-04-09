@@ -23,6 +23,8 @@ def getHP(month = 4, day = 1)
   page = URI.parse(url).read
   
   doc = Nokogiri::HTML.parse(page, nil, 'euc-jp')
+
+  logger.info(month, day)
   td = doc.xpath('//table[@class="table_layout"]')[month].xpath('tr')[day].xpath('td')
 
   if td.length == 3
