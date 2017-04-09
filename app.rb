@@ -65,7 +65,7 @@ post '/callback' do
           msg = op(t.month, t.day)
         elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間割/) and event.message['text'] =~ /明日/
           msg = op(t.month, t.day + 1)
-        elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間割/) and event.message['text'] =~ /(\d{1,2})\/(\d{1,2})/ and (event.message['text'] =~ /試験/ or event.message['text'] =~ /テスト/)
+        elsif (event.message['text'] =~ /試験/ or event.message['text'] =~ /テスト/) and event.message['text'] =~ /(\d{1,2})\/(\d{1,2})/
           begin
             m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)
             t = Time.parse("#{t.year}/#{m[1]}/#{m[2]}")
