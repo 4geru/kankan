@@ -8,14 +8,34 @@ require 'line/bot'
 require 'logger'
 require './timetable'
 
+helpers do
+  def protect!
+    unless authorized?
+      response['WWW-Authenticate'] = %(Basic realm="Restricted Area")
+      throw(:halt, [401, "Not authorized\n"])
+    end
+  end
+  def authorized?
+    @auth ||=  Rack::Auth::Basic::Request.new(request.env)
+    username = ENV['BASIC_AUTH_USERNAME']
+    password = ENV['BASIC_AUTH_PASSWORD']
+    @auth.provided? && @auth.basic? && @auth.credentials && @auth.credentials == [username, password]
+  end
+end
+
 logger = Logger.new(STDOUT)
 
 get '/' do
-  t = Time.new()
-  msg = op(t.month, t.day)
+  'ok'
+end
+
+get '/protect' do
+  protect!
+  'アクセス制限あり'
 end
 
 get '/api/:month/:day' do
+  protect!
   msg = op(params[:month], params[:day])
 end
 
