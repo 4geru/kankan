@@ -1,6 +1,7 @@
 require 'nokogiri'
 require 'open-uri'
 require 'logger'  
+require 'kconv'
 
 def timetable(doc, month = 0, day = 11)
   tr = doc[2..12]
@@ -22,9 +23,12 @@ def getHP(month = 4, day = 1)
   month = (month.to_i + 8) % 12
   day = day.to_i
   url = 'http://www.shiga-med.ac.jp/~hqgaku/SchoolCalendar/igaku/3/calendar_d.html'
-  page = URI.parse(url).read
-  
-  doc = Nokogiri::HTML.parse(page, nil, 'euc-jp')
+  #page = URI.parse(url).read
+  #doc = Nokogiri::HTML.parse(page, nil, 'euc-jp')
+
+  html_txt = open(url).read
+  html_txt_utf8 = html_txt.kconv(Kconv::UTF8, Kconv::EUC)
+  doc = Nokogiri(html_txt_utf8,'nil','UTF-8')
 
   td = doc.xpath('//table[@class="table_layout"]')[month].xpath('tr')[day].xpath('td')
 
