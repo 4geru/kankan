@@ -4,6 +4,7 @@ require 'sinatra/reloader' if development?
 require './models/count.rb'
 require 'nokogiri'
 require 'open-uri'
+require 'line/bot'
 require './timetable'
 
 get '/' do
