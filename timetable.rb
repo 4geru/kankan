@@ -55,7 +55,7 @@ def op(month = 4, day = 1)
   if not lectures[:isholiday]
     lectures[:classes].each_with_index do |lecture, i|
       next if lecture['title'] == ''
-      msg += "#{i+1}限目 #{lecture['title']} 教室 #{lecture['room']}\n - #{lecture['subtitle']} - \n(#{lecture['professor']})\n" 
+      msg += "#{i+1}限目 #{lecture['title']} 教室 #{lecture['room']}\n \u{1F4D4} #{lecture['subtitle']} - \n(#{lecture['professor']})\n" 
     end
   else
     msg = lectures[:title] + 'です.'
@@ -97,7 +97,7 @@ def exam(month = 4, day = 1)
       term += "-#{exam[i+1][:term]}"
       exam.delete(exam[i+1])
     end
-    msg += "#{lecture[:month]}/#{lecture[:day]} #{term}限目 #{lecture[:title]}\n U+1F4D4 #{lecture[:subtitle]}\n"
+    msg += "#{lecture[:month]}/#{lecture[:day]} #{term}限目 #{lecture[:title]}\n \u{1F4D4} #{lecture[:subtitle]}\n"
   end
   msg
 end
