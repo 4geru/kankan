@@ -59,7 +59,7 @@ def op(month = 4, day = 1)
       msg += "#{i+1}限目 #{lecture['title']} 教室 #{lecture['room']}\n - #{lecture['subtitle']} - \n(#{lecture['professor']})\n" 
     end
   else
-    msg = lectures[:title]
+    msg = lectures[:title] + 'です.'
   end
   msg 
 end
