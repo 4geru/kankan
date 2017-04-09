@@ -67,6 +67,8 @@ post '/callback' do
           msg = op(t.month, t.day + 1)
         elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間割/) and event.message['text'] =~ /\//
           m = str.match(/(\d{1,2})\/(\d{1,2})/)
+          month = m[1]
+          day = m[2]
           begin
             t = Time.parse(t.year.to_s + '/' + month.to_s + '/'  + day.to_s + ' 00:00:00')
             msg = op(t.month, t.day + 1)
