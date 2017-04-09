@@ -1,4 +1,3 @@
-
 require 'nokogiri'
 require 'open-uri'
 
@@ -22,7 +21,6 @@ def getHP(month = 4, day = 1)
   month = (month + 8) % 12
   url = 'http://www.shiga-med.ac.jp/~hqgaku/SchoolCalendar/igaku/3/calendar_d.html'
   page = URI.parse(url).read
-  charset = page.charset
   
   doc = Nokogiri::HTML.parse(page, nil, 'euc-jp')
   td = doc.xpath('//table[@class="table_layout"]')[month].xpath('tr')[day].xpath('td')
@@ -59,3 +57,6 @@ def op(month = 4, day = 1)
   end
   msg 
 end
+
+t = Time.new()
+p op(t.month, t.day + 1)

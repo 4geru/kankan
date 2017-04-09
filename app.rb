@@ -33,8 +33,9 @@ post '/callback' do
       case event.type
       when Line::Bot::Event::MessageType::Text
         msg = nil
-        t = Time.new()
         if event.message['text'] =~ /授業/ and event.message['text'] =~ /今日/
+          p 'ok'
+          t = Time.new()
           msg = op(t.month, t.day)
         end
         unless msg
