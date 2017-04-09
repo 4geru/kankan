@@ -33,7 +33,7 @@ def getHP(month = 4, day = 1)
   if td.length == 3
     # 休みの日
     if td[2].inner_text.gsub(/[\t\n\r]/,'') == ''
-      title = '授業なし'
+      title = 'お休みです.'
     else
       title = td[2].inner_text.gsub(/[\t\n\r]/,'').gsub('　','')
     end
@@ -44,7 +44,7 @@ def getHP(month = 4, day = 1)
     td[2..12].each do |t|
       isholiday = false if t.inner_text.gsub(/[\t\r\n]/, '') != ''
     end
-    return {isholiday: true, title: '授業なし'} if isholiday 
+    return {isholiday: true, title: 'お休みです.'} if isholiday 
     return {isholiday: false, classes: timetable(td)}
   end
 end
@@ -59,7 +59,7 @@ def op(month = 4, day = 1)
       msg += "#{i+1}限目 #{lecture['title']} 教室 #{lecture['room']}\n - #{lecture['subtitle']} - \n(#{lecture['professor']})\n" 
     end
   else
-    msg = 'お休みです.'
+    msg = lectures[:title]
   end
   msg 
 end
