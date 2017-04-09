@@ -35,7 +35,6 @@ get '/protect' do
 end
 
 get '/api/:month/:day' do
-  protect!
   msg = op(params[:month], params[:day])
 end
 
