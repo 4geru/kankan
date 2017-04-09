@@ -42,23 +42,19 @@ post '/callback' do
       when Line::Bot::Event::MessageType::Text
         msg = nil
         if event.message['text'] =~ /授業/ and event.message['text'] =~ /今日/
-          begin
-            logger.info('ok')
-            t = Time.new()
-            msg = op(4,10)#op(t.month, t.day)
-            logger.info('make reply message')
-          rescue => e
-            p e.message
-          end
+          logger.info('ok')
+          t = Time.new()
+          msg = op(4,10)#op(t.month, t.day)
+          logger.info('make reply message')
         end
-        unless msg
-          message = {
-            type: 'text',
-            text: msg
-          }
-          client.reply_message(event['replyToken'], message)
-          logger.info('replied message')
-        end
+        
+        message = {
+          type: 'text',
+          text: msg
+        }
+        client.reply_message(event['replyToken'], message)
+        logger.info('replied message')
+
       end
     end
   }
