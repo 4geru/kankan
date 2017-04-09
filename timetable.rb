@@ -57,7 +57,7 @@ def op(month = 4, day = 1)
   msg = ''
   if not lectures[:isholiday]
     lectures[:classes].each_with_index do |lecture, i|
-      next if lecture['title'] = ''
+      next if lecture['title'] == ''
       msg += "#{i+1}限目 #{lecture['title']} 教室 #{lecture['room']}\n - #{lecture['subtitle']} - \n(#{lecture['professor']})\n" 
     end
   else
