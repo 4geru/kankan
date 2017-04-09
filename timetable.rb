@@ -59,10 +59,3 @@ def op(month = 4, day = 1)
   end
   msg 
 end
-t = Time.new
-p op(t.month, t.day + 1)
-p op(4,1)
-p op(4,3)
-p op(4,4)
-p op(4,6)
-p op(4,11)

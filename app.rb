@@ -5,14 +5,8 @@ require './models/count.rb'
 require 'nokogiri'
 require 'open-uri'
 require './timetable'
-before do
-  if Count.all.size == 0
-    Count.create(number: 0)
-  end
-end
 
 get '/' do
-  
   'hello'
 end
 
