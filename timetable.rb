@@ -32,6 +32,7 @@ def getHP(month = 4, day = 1)
 
   if td.length == 3
     # 休みの日
+    title = ''
     if td[2].inner_text.gsub(/[\t\n\r]/,'') == ''
       title = 'お休みです.'
     else
@@ -51,7 +52,6 @@ end
 
 def op(month = 4, day = 1)
   lectures = getHP(month, day)
-  msg = ""
   msg = ''
   if not lectures[:isholiday]
     lectures[:classes].each_with_index do |lecture, i|
