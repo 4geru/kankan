@@ -15,6 +15,10 @@ get '/' do
   msg = op(t.month, t.day)
 end
 
+get '/api/:month/:day' do
+  msg = op(params[:month], params[:day])
+end
+
 def client
   @client ||= Line::Bot::Client.new { |config|
     config.channel_secret = ENV["LINE_CHANNEL_SECRET"]

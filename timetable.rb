@@ -1,9 +1,7 @@
 require 'nokogiri'
 require 'open-uri'
-require 'logger'
+require 'logger'  
 
-
-logger = Logger.new(STDOUT)
 def timetable(doc, month = 0, day = 11)
   tr = doc[2..12]
   lectures = []
@@ -21,13 +19,13 @@ def timetable(doc, month = 0, day = 11)
 end
 
 def getHP(month = 4, day = 1)
-  month = (month + 8) % 12
+  month = (month.to_i + 8) % 12
+  day = day.to_i
   url = 'http://www.shiga-med.ac.jp/~hqgaku/SchoolCalendar/igaku/3/calendar_d.html'
   page = URI.parse(url).read
   
   doc = Nokogiri::HTML.parse(page, nil, 'euc-jp')
 
-  logger.info(month, day)
   td = doc.xpath('//table[@class="table_layout"]')[month].xpath('tr')[day].xpath('td')
 
   if td.length == 3
