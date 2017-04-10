@@ -24,9 +24,9 @@ def getHP(td)
     # 休みの日
     title = ''
     if td[2].inner_text.gsub(/[\t\n\r]/,'') == ''
-      title = 'お休みです.'
+      title = "\u{1F4A4} お休み"
     else
-      title = td[2].inner_text.gsub(/[\t\n\r]/,'').gsub('　','')
+      title = "\u{3297}" + td[2].inner_text.gsub(/[\t\n\r]/,'').gsub('　','')
     end
     return {isholiday: true, title: title}
   else
@@ -35,7 +35,7 @@ def getHP(td)
     td[2..12].each do |t|
       isholiday = false if t.inner_text.gsub(/[\t\r\n]/, '') != ''
     end
-    return {isholiday: true, title: 'お休みです.'} if isholiday 
+    return {isholiday: true, title: '\u{1F4A4} お休み'} if isholiday 
     return {isholiday: false, classes: timetable(td)}
   end
 end
@@ -55,7 +55,7 @@ def op(month = 4, day = 1)
   if not lectures[:isholiday]
     lectures[:classes].each_with_index do |lecture, i|
       next if lecture['title'] == ''
-      msg += "#{i+1}限目 #{lecture['title']} 教室 #{lecture['room']}\n \u{1F4D4} #{lecture['subtitle']} - \n(#{lecture['professor']})\n" 
+      msg += "#{i+1}限目 #{lecture['title']} \u{1F6A9} #{lecture['room']}\n  \u{1F4D4}  #{lecture['subtitle']}\n  \u{1F468}  (#{lecture['professor']})\n" 
     end
   else
     msg = lectures[:title] + 'です.'
@@ -97,7 +97,7 @@ def exam(month = 4, day = 1)
       term += "-#{exam[i+1][:term]}"
       exam.delete(exam[i+1])
     end
-    msg += "#{lecture[:month]}/#{lecture[:day]} #{term}限目 #{lecture[:title]}\n \u{1F4D4} #{lecture[:subtitle]}\n"
+    msg += "#{lecture[:month]}/#{lecture[:day]} #{term}限目 #{lecture[:title]}\n  \u{1F4D4}  #{lecture['subtitle']}\n"
   end
   msg
 end
