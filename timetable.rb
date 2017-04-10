@@ -97,7 +97,7 @@ def exam(month = 4, day = 1)
       term += "-#{exam[i+1][:term]}"
       exam.delete(exam[i+1])
     end
-    msg += "#{lecture[:month]}/#{lecture[:day]} #{term}限目 #{lecture[:title]}\n  \u{1F4D4}  #{lecture['subtitle']}\n"
+    msg += "#{lecture[:month]}/#{lecture[:day]} #{term}限目 #{lecture[:title]}\n  \u{1F4D4}  #{lecture[:subtitle]}\n"
   end
   msg
 end
