@@ -122,7 +122,7 @@ post '/callback' do
       m.pushButton('看護学部', {"data": "type=dept&department=kango"})
       client.reply_message(event['replyToken'], m.reply('学部選択', '学部を教えてください'))
     when Line::Bot::Event::Postback
-      data = Hash[URI::decode_www_form(event.postback.data)]
+      data = Hash[URI::decode_www_form(event["postback"]["data"])]
       message = {
           type: 'text',
           text: data.to_s
