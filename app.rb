@@ -93,6 +93,7 @@ post '/callback' do
         end
       end
     when Line::Bot::Event::Join
+    when Line::Bot::Event::Follow
       m = MessageButton.new('学部選択中')
       m.pushButton('医学部',   {"data": "department='igaku'"})
       m.pushButton('看護学部', {"data": "department='kango'"})
