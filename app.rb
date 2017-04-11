@@ -104,11 +104,6 @@ post '/callback' do
       client.reply_message(event['replyToken'], m.reply('学部選択', '学部を教えてください'))
     when Line::Bot::Event::Postback
       data = Hash[URI::decode_www_form(event["postback"]["data"])]
-      message = {
-          type: 'text',
-          text: data.to_s
-      }
-      client.reply_message(event['replyToken'], message)
       case data["department"]
       when 'igaku'
 #        m.pushButton('6年生', {"data": "type=grade&year=6&department="+data.department})
