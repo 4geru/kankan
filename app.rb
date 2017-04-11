@@ -7,6 +7,7 @@ require 'open-uri'
 require 'line/bot'
 require 'logger'
 require './timetable'
+require './messagebutton'
 
 helpers do
   def protect!
@@ -89,9 +90,13 @@ post '/callback' do
             text: msg
           }
           client.reply_message(event['replyToken'], message)
-          logger.info('replied message')
         end
       end
+    when Line::Bot::Event::Join
+      m = MessageButton.new('学部選択中')
+      m.pushButton('医学部',   {"data": "department='igaku'"})
+      m.pushButton('看護学部', {"data": "department='kango'"})
+      client.reply_message(event['replyToken'], m.reply('学部選択', '学部を教えてください'))
     end
   }
 
