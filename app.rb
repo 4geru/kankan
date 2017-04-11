@@ -164,7 +164,7 @@ post '/callback' do
             grade: data["grade"]
           })
         end  
-        word = room["id"].to_s + '/' + room["channel_id"].to_s + '/' + room["department"].to_s + '/' + room["grade"].to_s
+        word = 'OK!\n' + (room["department"] == 'igaku' ? '医学部' : '看護学部') + 'の' + room["grade"] + '年生だね!'
         message = {
           type: 'text',
           text: word
