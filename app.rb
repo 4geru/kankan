@@ -47,6 +47,8 @@ get '/room/:room/:dept/:grade' do
     department: params[:dept],
     grade: params[:grade].to_i
   })
+  id = Room.where({channel_id: params[:room]}).limit(1)[0]
+  [id.id, id.channel_id].to_s
 end
 
 def client
@@ -146,7 +148,8 @@ post '/callback' do
           department: data["department"],
           grade: data["grade"] 
         })
-        id = Room.where({room: channel_id})[0].id
+
+        id = Room.where({channel_id: channel_id}).limit(1)[0].id
         message = {
           type: 'text',
           text: id

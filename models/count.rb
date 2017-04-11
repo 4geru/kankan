@@ -4,5 +4,5 @@ class Count < ActiveRecord::Base
 end
 
 class Room < ActiveRecord::Base
-
+  validates :channel_id, uniqueness: true
 end
