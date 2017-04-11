@@ -108,15 +108,23 @@ post '/callback' do
       when 'dept'
         case data["department"]
         when 'igaku'
-          m = MessageButton.new('学部選択中')
-          m.pushButton('1年', {"data": "type=dept&department=igaku"})
-          m.pushButton('2年', {"data": "type=dept&department=kango"})
-          client.reply_message(event['replyToken'], m.reply('学部選択', '学部を教えてください'))
+          m = MessageButton.new('学年選択中')
+#          m.pushButton('1年', {"data": "type=grade&department=igaku&grade=1"})
+#          m.pushButton('2年', {"data": "type=grade&department=igaku&grade=2"})
+          m.pushButton('3年', {"data": "type=grade&department=igaku&grade=3"})
+          m.pushButton('4年', {"data": "type=grade&department=igaku&grade=4"})
+          m.pushButton('5年', {"data": "type=grade&department=igaku&grade=5"})
+          m.pushButton('6年', {"data": "type=grade&department=igaku&grade=6"})
+          client.reply_message(event['replyToken'], m.reply('医学部 > 学年選択', '学年を教えてください'))
         when 'kango' 
-          m = MessageButton.new('学部選択中')
-          m.pushButton('医学部',   {"data": "type=dept&department=igaku"})
-          m.pushButton('看護学部', {"data": "type=dept&department=kango"})
-          client.reply_message(event['replyToken'], m.reply('学部選択', '学部を教えてください'))
+          m = MessageButton.new('学年選択中')
+          m.pushButton('1年', {"data": "type=grade&department=igaku&grade=1"})
+          m.pushButton('2年', {"data": "type=grade&department=igaku&grade=2"})
+          m.pushButton('3年', {"data": "type=grade&department=igaku&grade=3"})
+          m.pushButton('4年', {"data": "type=grade&department=igaku&grade=4"})
+          m.pushButton('5年', {"data": "type=grade&department=igaku&grade=5"})
+          m.pushButton('6年', {"data": "type=grade&department=igaku&grade=6"})
+          client.reply_message(event['replyToken'], m.reply('看護学部 > 学年選択', '学年を教えてください'))
         end
       end
     end
