@@ -4,7 +4,7 @@ class MessageButton
     @altText = altText
   end
 
-  def reply(title = nil, text = nil, altText = nil)
+  def reply(title = nil, text = nil)
   return nil if @buttons.length == 0
   return nil if title.nil?
   return nil if text.nil?
@@ -21,6 +21,16 @@ class MessageButton
   }
   end
 
+  def getButtons(title = nil, text = nil)
+  return nil if @buttons.length == 0
+  return nil if title.nil?
+  return nil if text.nil?
+  {
+    "title": title,
+    "text": text,
+    "actions": @buttons
+  }
+  end
   # option : {data=nil, url=nil}
   def pushButton(label='', option)
     @buttons.push(option.merge({"type": "postback", "label": label}))
