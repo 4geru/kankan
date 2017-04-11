@@ -118,11 +118,11 @@ post '/callback' do
           m2.pushButton('4年', {"data": "type=grade&department=igaku&grade=4"})
           m2.pushButton('5年', {"data": "type=grade&department=igaku&grade=5"})
           m2.pushButton('6年', {"data": "type=grade&department=igaku&grade=6"})
-          m.reply([
+          message = m.reply([
             m1.getButtons('医学部 > 学年選択 > 低学年', '学年を教えてください'),
             m2.getButtons('医学部 > 学年選択 > 高学年', '学年を教えてください')
           ])
-          client.reply_message(event['replyToken'], m.reply('医学部 > 学年選択', '学年を教えてください'))
+          client.reply_message(event['replyToken'], message)
         when 'kango' 
           m = MessageButton.new('学年選択中')
           m.pushButton('1年', {"data": "type=grade&department=igaku&grade=1"})
