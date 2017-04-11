@@ -2,3 +2,7 @@ ActiveRecord::Base.establish_connection(ENV['DATABASE_URL']||"sqlite3:db/develop
 class Count < ActiveRecord::Base
 
 end
+
+class Room < ActiveRecord::Base
+
+end
