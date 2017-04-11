@@ -150,20 +150,27 @@ post '/callback' do
         end
       when 'grade'
         channel_id = get_id(event["source"])
-        message = {
-          type: 'text',
-          text: channel_id
-        }
-        client.reply_message(event['replyToken'], message)  
         room = Room.where(channel_id: channel_id)[0]
 
         if not room 
+          message = {
+          type: 'text',
+          text: 'true'
+        }
+        client.reply_message(event['replyToken'], message)  
+        
           room = Room.create({
             channel_id: channel_id,
             department: data["department"],
             grade: data["grade"]
           })
         else
+          message = {
+          type: 'text',
+          text: 'false'
+        }
+        client.reply_message(event['replyToken'], message)  
+        
           room.update!({
             department: data["department"],
             grade: data["grade"]
