@@ -11,12 +11,22 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20150320021220) do
+ActiveRecord::Schema.define(version: 20170410155839) do
 
   create_table "counts", force: :cascade do |t|
     t.integer  "number"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "days", force: :cascade do |t|
+    t.string  "date",       default: ""
+    t.boolean "isHoliday",  default: false
+    t.string  "reason",     default: ""
+    t.string  "timetable",  default: ""
+    t.integer "grade"
+    t.string  "department"
+    t.integer "period"
   end
 
 end

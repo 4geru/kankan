@@ -2,10 +2,7 @@ require 'bundler/setup'
 Bundler.require
 require 'sinatra/reloader' if development?
 require './models/count.rb'
-require 'nokogiri'
-require 'open-uri'
 require 'line/bot'
-require 'logger'
 require './timetable'
 
 helpers do
@@ -34,8 +31,8 @@ get '/protect' do
   'アクセス制限あり'
 end
 
-get '/api/:month/:day' do
-  msg = op(params[:month], params[:day])
+get '/api/:department/:grade/:month/:day' do
+  msg = op(params[:department], params[:grade], params[:month], params[:day])
 end
 
 def client
