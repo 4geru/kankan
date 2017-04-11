@@ -166,7 +166,7 @@ post '/callback' do
         end  
         message = {
           type: 'text',
-          text: room["id"] + '/' + room["channel_id"] + '/' + room["department"] + '/' + room["grade"]
+          text: room["id"].to_s + '/' + room["channel_id"].to_s + '/' + room["department"].to_s + '/' + room["grade"].to_s
         }
         client.reply_message(event['replyToken'], message)       
       end
