@@ -150,6 +150,11 @@ post '/callback' do
         end
       when 'grade'
         channel_id = get_id(event["source"])
+        message = {
+          type: 'text',
+          text: channel_id
+        }
+        client.reply_message(event['replyToken'], message)  
         room = Room.where(channel_id: channel_id)[0]
 
         if not room 
