@@ -8,7 +8,6 @@ class MessageButton
   return nil if @buttons.length == 0
   return nil if title.nil?
   return nil if text.nil?
-  @altText = altText if altText
   {
     "type": "template",
     "altText": @altText || "this is a buttons template",
