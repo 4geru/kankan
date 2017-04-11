@@ -6,3 +6,7 @@ end
 class Room < ActiveRecord::Base
   validates :channel_id, uniqueness: true
 end
+
+class Day < ActiveRecord::Base
+
+end
