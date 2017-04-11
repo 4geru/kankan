@@ -92,14 +92,7 @@ post '/callback' do
           client.reply_message(event['replyToken'], message)
         end
       when Line::Bot::Event::MessageType::Postback
-        data = Hash[URI::decode_www_form(event.postback.data)]
-        case data.type
-        when 'dept'
-          message = {
-            type: 'text',
-            text: data.to_s
-          }
-          client.reply_message(event['replyToken'], message)
+        
           # m = MessageButton.new('学部選択中')
           # case data.department
           # when 'igaku'
@@ -117,14 +110,28 @@ post '/callback' do
           #   m.pushButton('1年生', {"data": "type=grade&year=1&department="+data.department})
           #   client.reply_message(event['replyToken'], m.reply('学年選択', '学年を教えてください'))
           # end
-        end
       end
     when Line::Bot::Event::Join
+      m = MessageButton.new('学部選択中')
+      m.pushButton('医学部',   {"data": "type=dept&department=igaku"})
+      m.pushButton('看護学部', {"data": "type=dept&department=kango"})
+      client.reply_message(event['replyToken'], m.reply('学部選択', '学部を教えてください'))
     when Line::Bot::Event::Follow
       m = MessageButton.new('学部選択中')
       m.pushButton('医学部',   {"data": "type=dept&department=igaku"})
       m.pushButton('看護学部', {"data": "type=dept&department=kango"})
       client.reply_message(event['replyToken'], m.reply('学部選択', '学部を教えてください'))
+    when Line::Bot::Event::Postback
+      data = Hash[URI::decode_www_form(event.postback.data)]
+        case data.type
+        when 'dept'
+          message = {
+            type: 'text',
+            text: data.to_s
+          }
+          client.reply_message(event['replyToken'], message)
+        end
+      end
     end
   end
 
