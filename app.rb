@@ -101,8 +101,8 @@ post '/callback' do
         type: 'text',
         text: 'ok'
       }
-      client.reply_message(event['replyToken'], message)
-#      client.reply_message(event['replyToken'], m.reply('学部選択', '学部を教えてください'))
+#      client.reply_message(event['replyToken'], message)
+      client.reply_message(event['replyToken'], m.reply('学部選択', '学部を教えてください'))
     end
   }
 
