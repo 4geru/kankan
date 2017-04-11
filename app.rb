@@ -163,7 +163,12 @@ post '/callback' do
             department: data["department"],
             grade: data["grade"]
           })
-        end   
+        end  
+        message = {
+          type: 'text',
+          text: room["id"] + '/' + room["channel_id"] + '/' + room["department"] + '/' + room["grade"]
+        }
+        client.reply_message(event['replyToken'], message)       
       end
       
     end
