@@ -116,7 +116,7 @@ post '/callback' do
           #   m.pushButton('2年生', {"data": "type=grade&year=2&department="+data.department})
           #   m.pushButton('1年生', {"data": "type=grade&year=1&department="+data.department})
           #   client.reply_message(event['replyToken'], m.reply('学年選択', '学年を教えてください'))
-          end
+          # end
         end
       end
     when Line::Bot::Event::Join
