@@ -39,13 +39,6 @@ get '/api/:month/:day' do
   msg = op(params[:month], params[:day])
 end
 
-get '/test' do
-  m = MessageButton.new('学部選択中')
-  m.pushButton('医学部',   {"data": "department='igaku'"})
-  m.pushButton('看護学部', {"data": "department='kango'"})
-  m.reply('学部選択', '学部を教えてください').to_s
-end
-
 def client
   @client ||= Line::Bot::Client.new { |config|
     config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
@@ -98,12 +91,32 @@ post '/callback' do
           }
           client.reply_message(event['replyToken'], message)
         end
+      when Line::Bot::Event::MessageType::Text
+        data = Hash[URI::decode_www_form(event.postback.data)]
+        case data.type
+        when 'type'
+          m = MessageButton.new('学部選択中')
+          case data.department
+          when 'igaku'
+           # m.pushButton('6年生', {"data": "type=grade&year=6&department="+data.department})
+           # m.pushButton('5年生', {"data": "type=grade&year=5&department="+data.department})
+            m.pushButton('4年生', {"data": "type=grade&year=4&department="+data.department})
+            m.pushButton('3年生', {"data": "type=grade&year=3&department="+data.department})
+            m.pushButton('2年生', {"data": "type=grade&year=2&department="+data.department})
+            m.pushButton('1年生', {"data": "type=grade&year=1&department="+data.department})
+          when 'kango' 
+            m.pushButton('4年生', {"data": "type=grade&year=4&department="+data.department})
+            m.pushButton('3年生', {"data": "type=grade&year=3&department="+data.department})
+            m.pushButton('2年生', {"data": "type=grade&year=2&department="+data.department})
+            m.pushButton('1年生', {"data": "type=grade&year=1&department="+data.department})
+            client.reply_message(event['replyToken'], m.reply('学年選択', '学年を教えてください'))
+        end
       end
     when Line::Bot::Event::Join
     when Line::Bot::Event::Follow
       m = MessageButton.new('学部選択中')
-      m.pushButton('医学部',   {"data": "department='igaku'"})
-      m.pushButton('看護学部', {"data": "department='kango'"})
+      m.pushButton('医学部',   {"data": "type=dept&department=igaku"})
+      m.pushButton('看護学部', {"data": "type=dept&department=kango"})
       client.reply_message(event['replyToken'], m.reply('学部選択', '学部を教えてください'))
     end
   }
