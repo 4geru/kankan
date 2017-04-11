@@ -153,32 +153,21 @@ post '/callback' do
         room = Room.where(channel_id: channel_id)[0]
 
         if not room 
-          message = {
-          type: 'text',
-          text: 'true'
-        }
-        client.reply_message(event['replyToken'], message)  
-        
           room = Room.create({
             channel_id: channel_id,
             department: data["department"],
             grade: data["grade"]
           })
         else
-          message = {
-          type: 'text',
-          text: 'false'
-        }
-        client.reply_message(event['replyToken'], message)  
-        
           room.update!({
             department: data["department"],
             grade: data["grade"]
           })
         end  
+        word = room["id"].to_s + '/' + room["channel_id"].to_s + '/' + room["department"].to_s + '/' + room["grade"].to_s
         message = {
           type: 'text',
-          text: room["id"].to_s + '/' + room["channel_id"].to_s + '/' + room["department"].to_s + '/' + room["grade"].to_s
+          text: word
         }
         client.reply_message(event['replyToken'], message)       
       end
