@@ -142,14 +142,14 @@ post '/callback' do
           ]))
         when 'kango' 
           m = MessageButton.new('学年選択中')
-          m.pushButton('1年', {"data": "type=grade&department=igaku&grade=1"})
-          m.pushButton('2年', {"data": "type=grade&department=igaku&grade=2"})
-          m.pushButton('3年', {"data": "type=grade&department=igaku&grade=3"})
-          m.pushButton('4年', {"data": "type=grade&department=igaku&grade=4"})
+          m.pushButton('1年', {"data": "type=grade&department=kango&grade=1"})
+          m.pushButton('2年', {"data": "type=grade&department=kango&grade=2"})
+          m.pushButton('3年', {"data": "type=grade&department=kango&grade=3"})
+          m.pushButton('4年', {"data": "type=grade&department=kango&grade=4"})
           client.reply_message(event['replyToken'], m.reply('看護学部 > 学年選択', '学年を教えてください'))
         end
       when 'grade'
-        channel_id = get_id(event)
+        channel_id = get_id(event["source"])
         room = Room.where(channel_id: channel_id)[0]
 
         if not room 
