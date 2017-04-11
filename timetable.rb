@@ -35,7 +35,7 @@ def getHP(td)
     td[2..12].each do |t|
       isholiday = false if t.inner_text.gsub(/[\t\r\n]/, '') != ''
     end
-    return {isholiday: true, title: '\u{1F4A4} お休み'} if isholiday 
+    return {isholiday: true, title: "\u{1F4A4} お休み"} if isholiday 
     return {isholiday: false, classes: timetable(td)}
   end
 end
