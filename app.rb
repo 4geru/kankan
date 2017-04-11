@@ -123,15 +123,12 @@ post '/callback' do
       client.reply_message(event['replyToken'], m.reply('学部選択', '学部を教えてください'))
     when Line::Bot::Event::Postback
       data = Hash[URI::decode_www_form(event.postback.data)]
-      case data.type
-      when 'dept'
-        message = {
+      message = {
           type: 'text',
           text: data.to_s
-        }
-        client.reply_message(event['replyToken'], message)
+      }
+      client.reply_message(event['replyToken'], message)
       
-      end
     end
   end
 
