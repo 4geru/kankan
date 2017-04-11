@@ -94,7 +94,7 @@ post '/callback' do
       when Line::Bot::Event::MessageType::Text
         data = Hash[URI::decode_www_form(event.postback.data)]
         case data.type
-        when 'type'
+        when 'dept'
           m = MessageButton.new('学部選択中')
           case data.department
           when 'igaku'
