@@ -41,6 +41,14 @@ get '/api/:month/:day' do
   msg = op(params[:month], params[:day])
 end
 
+get '/room/:room/:dept/:grade' do
+  Room.create({
+    channel_id: params[:room],
+    department: params[:dept],
+    grade: params[:grade].to_i
+  })
+end
+
 def client
   @client ||= Line::Bot::Client.new { |config|
     config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
@@ -134,7 +142,7 @@ post '/callback' do
       when 'grade'
         channel_id = get_id(event["source"])
         Room.create({
-          room: get_id(event["source"]),
+          channel_id: get_id(event["source"]),
           department: data["department"],
           grade: data["grade"] 
         })
