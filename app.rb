@@ -91,7 +91,7 @@ post '/callback' do
           }
           client.reply_message(event['replyToken'], message)
         end
-      when Line::Bot::Event::MessageType::Text
+      when Line::Bot::Event::MessageType::Postback
         data = Hash[URI::decode_www_form(event.postback.data)]
         case data.type
         when 'dept'
