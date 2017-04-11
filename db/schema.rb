@@ -19,16 +19,6 @@ ActiveRecord::Schema.define(version: 20170411135428) do
     t.datetime "updated_at", null: false
   end
 
-  create_table "days", force: :cascade do |t|
-    t.string  "date",       default: ""
-    t.boolean "isHoliday",  default: false
-    t.string  "reason",     default: ""
-    t.string  "timetable",  default: ""
-    t.integer "grade"
-    t.string  "department"
-    t.integer "period"
-  end
-
   create_table "rooms", force: :cascade do |t|
     t.string   "channel_id"
     t.string   "department"

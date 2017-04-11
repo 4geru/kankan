@@ -42,13 +42,20 @@ get '/api/:month/:day' do
 end
 
 get '/room/:room/:dept/:grade' do
-  Room.create({
-    channel_id: params[:room],
-    department: params[:dept],
-    grade: params[:grade].to_i
-  })
-  id = Room.where({channel_id: params[:room]}).limit(1)[0]
-  [id.id, id.channel_id].to_s
+  room = Room.where(channel_id: params[:room])[0]
+
+  if not room 
+    room = Room.create({
+      channel_id: params[:room],
+      department: params[:dept],
+      grade: params[:grade]
+    })
+  else
+    room.update!({
+      department: params[:dept],
+      grade: params[:grade]
+    })
+  end 
 end
 
 def client
@@ -142,19 +149,21 @@ post '/callback' do
           client.reply_message(event['replyToken'], m.reply('看護学部 > 学年選択', '学年を教えてください'))
         end
       when 'grade'
-        channel_id = get_id(event["source"])
-        Room.create({
-          channel_id: get_id(event["source"]),
-          department: data["department"],
-          grade: data["grade"] 
-        })
+        channel_id = get_id(event)
+        room = Room.where(channel_id: channel_id)[0]
 
-        id = Room.where({channel_id: channel_id}).limit(1)[0].id
-        message = {
-          type: 'text',
-          text: id
-        }
-        client.reply_message(event['replyToken'], message)
+        if not room 
+          room = Room.create({
+            channel_id: channel_id,
+            department: data["department"],
+            grade: data["grade"]
+          })
+        else
+          room.update!({
+            department: data["department"],
+            grade: data["grade"]
+          })
+        end   
       end
       
     end
