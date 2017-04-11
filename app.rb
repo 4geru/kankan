@@ -164,7 +164,7 @@ post '/callback' do
             grade: data["grade"]
           })
         end  
-        word = 'OK!\n' + (room["department"] == 'igaku' ? '医学部' : '看護学部') + 'の' + room["grade"] + '年生だね!'
+        word = 'OK!\n' + (room["department"] == 'igaku' ? '医学部' : '看護学部') + 'の' + room["grade"].to_s + '年生だね!'
         message = {
           type: 'text',
           text: word
