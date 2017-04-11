@@ -9,6 +9,7 @@ require 'logger'
 require './timetable'
 require './messagebutton'
 require './messagecarousel'
+require './lib'
 
 helpers do
   def protect!
@@ -130,7 +131,15 @@ post '/callback' do
           m.pushButton('4年', {"data": "type=grade&department=igaku&grade=4"})
           client.reply_message(event['replyToken'], m.reply('看護学部 > 学年選択', '学年を教えてください'))
         end
+      when 'grade'
+        channel_id = get_id(event["source"])
+        message = {
+          type: 'text',
+          text: channel_id
+        }
+        client.reply_message(event['replyToken'], message)
       end
+      
     end
   end
 
