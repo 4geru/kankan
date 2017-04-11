@@ -91,26 +91,6 @@ post '/callback' do
           }
           client.reply_message(event['replyToken'], message)
         end
-      when Line::Bot::Event::MessageType::Postback
-        
-          # m = MessageButton.new('学部選択中')
-          # case data.department
-          # when 'igaku'
-          #  # m.pushButton('6年生', {"data": "type=grade&year=6&department="+data.department})
-          #  # m.pushButton('5年生', {"data": "type=grade&year=5&department="+data.department})
-          #   m.pushButton('4年生', {"data": "type=grade&year=4&department="+data.department})
-          #   m.pushButton('3年生', {"data": "type=grade&year=3&department="+data.department})
-          #   m.pushButton('2年生', {"data": "type=grade&year=2&department="+data.department})
-          #   m.pushButton('1年生', {"data": "type=grade&year=1&department="+data.department})
-          #   client.reply_message(event['replyToken'], m.reply('学年選択', '学年を教えてください'))
-          # when 'kango' 
-          #   m.pushButton('4年生', {"data": "type=grade&year=4&department="+data.department})
-          #   m.pushButton('3年生', {"data": "type=grade&year=3&department="+data.department})
-          #   m.pushButton('2年生', {"data": "type=grade&year=2&department="+data.department})
-          #   m.pushButton('1年生', {"data": "type=grade&year=1&department="+data.department})
-          #   client.reply_message(event['replyToken'], m.reply('学年選択', '学年を教えてください'))
-          # end
-      end
     when Line::Bot::Event::Join
       m = MessageButton.new('学部選択中')
       m.pushButton('医学部',   {"data": "type=dept&department=igaku"})
@@ -128,7 +108,24 @@ post '/callback' do
           text: data.to_s
       }
       client.reply_message(event['replyToken'], message)
-      
+      case data.department
+      when 'igaku'
+        m = MessageButton.new('学年選択中')
+#        m.pushButton('6年生', {"data": "type=grade&year=6&department="+data.department})
+#        m.pushButton('5年生', {"data": "type=grade&year=5&department="+data.department})
+        m.pushButton('4年生', {"data": "type=grade&year=4&department="+data.department})
+        m.pushButton('3年生', {"data": "type=grade&year=3&department="+data.department})
+        m.pushButton('2年生', {"data": "type=grade&year=2&department="+data.department})
+        m.pushButton('1年生', {"data": "type=grade&year=1&department="+data.department})
+        client.reply_message(event['replyToken'], m.reply('学年選択', '学年を教えてください'))
+      when 'kango' 
+        m = MessageButton.new('学年選択中')
+        m.pushButton('4年生', {"data": "type=grade&year=4&department="+data.department})
+        m.pushButton('3年生', {"data": "type=grade&year=3&department="+data.department})
+        m.pushButton('2年生', {"data": "type=grade&year=2&department="+data.department})
+        m.pushButton('1年生', {"data": "type=grade&year=1&department="+data.department})
+        client.reply_message(event['replyToken'], m.reply('学年選択', '学年を教えてください'))
+      end
     end
   end
 
