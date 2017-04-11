@@ -16,9 +16,7 @@ class MessageButton
         "type": "buttons",
         "title": title,
         "text": text,
-        "actions": [
-            @buttons
-        ]
+        "actions": @buttons
     }
   }
   end

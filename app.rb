@@ -39,6 +39,13 @@ get '/api/:month/:day' do
   msg = op(params[:month], params[:day])
 end
 
+get '/test' do
+  m = MessageButton.new('学部選択中')
+  m.pushButton('医学部',   {"data": "department='igaku'"})
+  m.pushButton('看護学部', {"data": "department='kango'"})
+  m.reply('学部選択', '学部を教えてください').to_s
+end
+
 def client
   @client ||= Line::Bot::Client.new { |config|
     config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
@@ -97,11 +104,6 @@ post '/callback' do
       m = MessageButton.new('学部選択中')
       m.pushButton('医学部',   {"data": "department='igaku'"})
       m.pushButton('看護学部', {"data": "department='kango'"})
-      message = {
-        type: 'text',
-        text: 'ok'
-      }
-#      client.reply_message(event['replyToken'], message)
       client.reply_message(event['replyToken'], m.reply('学部選択', '学部を教えてください'))
     end
   }
