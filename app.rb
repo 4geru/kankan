@@ -34,11 +34,25 @@ get '/protect' do
   'アクセス制限あり'
 end
 
+get '/test' do 
+  t = Time.new
+  m = params[:text].match(/(\d{1,2})\/(\d{1,2})/)
+  t = Time.parse("#{t.year}/#{m[1]}/#{m[2]}")
+  if m[1] == "12"
+    m[1] = '1'
+    msg = ["0", m[2]].to_s
+  else
+    msg = [m[1], m[2]].to_s
+  end
+end
+
 get '/api/:department/:grade/:month/:day' do
+  protect!
   msg = op(params[:department], params[:grade], params[:month], params[:day])
 end
 
 get '/room/:room/:dept/:grade' do
+  protect!
   room = Room.where(channel_id: params[:room])[0]
 
   if not room 
@@ -105,8 +119,11 @@ post '/callback' do
           begin
             m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)
             t = Time.parse("#{t.year}/#{m[1]}/#{m[2]}")
-            m[1] = 0 if m[1] == 12
-            msg = op(dept, grade, m[1], m[2])
+            if m[1] == "12"
+              msg = op(dept, grade, "0", m[2])
+            else
+              msg = op(dept, grade, m[1], m[2])
+            end
           rescue => e
             msg = '日付の入力を直してください 月/日'
           end
