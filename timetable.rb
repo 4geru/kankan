@@ -5,10 +5,7 @@
 def op(department, grade, month = 4, day = 1)
   t = Time.new
 
-  if month.to_i == 12
-    month = 0
-  end
-  date = t.year.to_s + '/' + month.to_s + '/' + day.to_s
+  date = t.year.to_s + '/' + (month.to_i == 12? "0" : month.to_s) + '/' + day.to_s
   lectures = Day.where({department: department, grade: grade, date:date}).first
   dept = (department == 'igaku' ? '医学部' : '看護学部')
   msg = "#{month}月#{day}日 #{dept} #{grade}年生"
