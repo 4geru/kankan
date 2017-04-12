@@ -105,6 +105,7 @@ post '/callback' do
           begin
             m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)
             t = Time.parse("#{t.year}/#{m[1]}/#{m[2]}")
+            m[1] = 0 if m[1] == 12
             msg = op(dept, grade, m[1], m[2])
           rescue => e
             msg = '日付の入力を直してください 月/日'
