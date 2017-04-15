@@ -14,7 +14,7 @@ def getExam(department, grade, month = 4, day = 1)
   # p [department, grade, date]
 
   lectures = Exam.where({department: department, grade: grade, date:date}).first
-  dept = (department == 'igaku' ? '医学部' : '看護学部')
+  dept = (department == 'igaku' ? '医学科' : '看護学科')
   msg = "#{month}月#{day}日 (#{weekName(t.wday)}) #{dept} #{grade}年生\n"
   # p "#{date}, #{grade}, #{department}"
   return nil unless lectures
@@ -42,7 +42,7 @@ end
 def getExamsTitle(department, grade, title)
   exams = Exam.where('(timetable like ?) and (grade = ?) and (department = ?)', "%#{title}%" , grade, department).uniq
   return 'その教科はありません' if exams.length == 0
-  dept = (department == 'igaku' ? '医学部' : '看護学部')
+  dept = (department == 'igaku' ? '医学科' : '看護学科')
   msg = ""
   min_exams = []
   exams.each do |exam|

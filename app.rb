@@ -112,10 +112,10 @@ post '/callback' do
         dept  = room["department"]
         grade = room["grade"]
         if not room 
-          m = MessageButton.new('学部選択中')
-          m.pushButton('医学部',   {"data": "type=dept&department=igaku"})
-          m.pushButton('看護学部', {"data": "type=dept&department=kango"})
-          client.reply_message(event['replyToken'], m.reply('学部選択', '情報を登録してね！'))
+          m = MessageButton.new('学科選択中')
+          m.pushButton('医学科',   {"data": "type=dept&department=igaku"})
+          m.pushButton('看護学科', {"data": "type=dept&department=kango"})
+          client.reply_message(event['replyToken'], m.reply('学科選択', '情報を登録してね！'))
         end
         if (event.message['text'] =~ /何時まで/ or event.message['text'] =~ /終了時間/) and event.message['text'] =~ /今日/
           msg = getEndTime(dept, grade, t.month, t.day)
@@ -165,10 +165,10 @@ post '/callback' do
             msg = 'その教科はありません'
           end
         elsif event.message['text'] =~ /カンカン/ and event.message['text'] =~ /設定/
-          m = MessageButton.new('学部選択中')
-          m.pushButton('医学部',   {"data": "type=dept&department=igaku"})
-          m.pushButton('看護学部', {"data": "type=dept&department=kango"})
-          client.reply_message(event['replyToken'], m.reply('学部選択', '設定を変更する？学部を教えてね！'))
+          m = MessageButton.new('学科選択中')
+          m.pushButton('医学科',   {"data": "type=dept&department=igaku"})
+          m.pushButton('看護学科', {"data": "type=dept&department=kango"})
+          client.reply_message(event['replyToken'], m.reply('学科選択', '設定を変更する？学科を教えてね！'))
         elsif event.message['text'] =~ /カンカン/ and (event.message['text'] =~ /ヘルプ/ or event.message['text'] =~ /help/)
           content = [
             "\u{1F4AC}[今日,曜日,日付(月/日)]の授業は？",
@@ -180,7 +180,7 @@ post '/callback' do
             "\u{1F4AC}[今日,曜日,日付(月/日)]何時まで？",
             "　\u{2705} 終わりの時間を教えてくれるよ！",
             "\u{1F4AC}カンカン設定！",
-            "　\u{2705} 学部,学年を変更できるよ！",
+            "　\u{2705} 学科,学年を変更できるよ！",
             "\u{1F4AC}カンカンヘルプ！",
             "　\u{2705} 指示の一覧が見れるよ！"]
           msg = content.join("\n")
@@ -194,15 +194,15 @@ post '/callback' do
         end
       end
     when Line::Bot::Event::Join
-      m = MessageButton.new('学部選択中')
-      m.pushButton('医学部',   {"data": "type=dept&department=igaku"})
-      m.pushButton('看護学部', {"data": "type=dept&department=kango"})
-      client.reply_message(event['replyToken'], m.reply('学部選択', '初めまして！カンカンです！学部を教えてね！'))
+      m = MessageButton.new('学科選択中')
+      m.pushButton('医学科',   {"data": "type=dept&department=igaku"})
+      m.pushButton('看護学科', {"data": "type=dept&department=kango"})
+      client.reply_message(event['replyToken'], m.reply('学科選択', '初めまして！カンカンです！学科を教えてね！'))
     when Line::Bot::Event::Follow
-      m = MessageButton.new('学部選択中')
-      m.pushButton('医学部',   {"data": "type=dept&department=igaku"})
-      m.pushButton('看護学部', {"data": "type=dept&department=kango"})
-      client.reply_message(event['replyToken'], m.reply('学部選択', '初めまして！カンカンです！学部を教えてね！'))
+      m = MessageButton.new('学科選択中')
+      m.pushButton('医学科',   {"data": "type=dept&department=igaku"})
+      m.pushButton('看護学科', {"data": "type=dept&department=kango"})
+      client.reply_message(event['replyToken'], m.reply('学科選択', '初めまして！カンカンです！学科を教えてね！'))
     when Line::Bot::Event::Postback
       data = Hash[URI::decode_www_form(event["postback"]["data"])]
       case data["type"]
@@ -219,8 +219,8 @@ post '/callback' do
           m2.pushButton('5年', {"data": "type=grade&department=igaku&grade=5"})
           m2.pushButton('6年', {"data": "type=grade&department=igaku&grade=6"})
           client.reply_message(event['replyToken'], m.reply([
-            m1.getButtons('医学部 > 学年選択 > 低学年', '学年を教えてね！'),
-            m2.getButtons('医学部 > 学年選択 > 高学年', '学年を教えてね！')
+            m1.getButtons('医学科 > 学年選択 > 低学年', '学年を教えてね！'),
+            m2.getButtons('医学科 > 学年選択 > 高学年', '学年を教えてね！')
           ]))
         when 'kango' 
           m = MessageButton.new('学年選択中')
@@ -228,7 +228,7 @@ post '/callback' do
           m.pushButton('2年', {"data": "type=grade&department=kango&grade=2"})
           m.pushButton('3年', {"data": "type=grade&department=kango&grade=3"})
           m.pushButton('4年', {"data": "type=grade&department=kango&grade=4"})
-          client.reply_message(event['replyToken'], m.reply('看護学部 > 学年選択', '学年を教えてね！'))
+          client.reply_message(event['replyToken'], m.reply('看護学科 > 学年選択', '学年を教えてね！'))
         end
       when 'grade'
         channel_id = get_id(event["source"])
@@ -246,7 +246,7 @@ post '/callback' do
             grade: data["grade"]
           })
         end  
-        dept = (room["department"] == 'igaku' ? '医学部' : '看護学部')
+        dept = (room["department"] == 'igaku' ? '医学科' : '看護学科')
         word = "ありがとう！\n#{dept}の#{room["grade"]}年生だね！登録したよ！"
         message = {
           type: 'text',

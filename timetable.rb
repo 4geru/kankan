@@ -8,7 +8,7 @@ def op(department, grade, month = 4, day = 1)
   date = t.year.to_s + '/' + (month == 12 ? "0" : month.to_s) + '/' + day.to_s
   p [department, grade, date]
   lectures = Day.where({department: department, grade: grade, date:date}).first
-  dept = (department == 'igaku' ? '医学部' : '看護学部')
+  dept = (department == 'igaku' ? '医学科' : '看護学科')
   msg = "#{month}月#{day}日 (#{weekName(t.wday)}) #{dept} #{grade}年生"
   p lectures
   if not lectures['isHoliday']
