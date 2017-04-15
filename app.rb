@@ -111,6 +111,8 @@ post '/callback' do
           msg = op(dept, grade, t.month, t.day)
         elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/) and event.message['text'] =~ /明日/
           msg = op(dept, grade, t.month, t.day + 1)
+        elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/) and event.message['text'] =~ /明後日/
+          msg = op(dept, grade, t.month, t.day + 2)
         elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/) and event.message['text'] =~ /(\d{1,2})\/(\d{1,2})/
           begin
             m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)
