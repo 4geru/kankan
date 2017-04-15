@@ -36,6 +36,7 @@ get '/protect' do
 end
 
 get '/api/:department/:grade/:month/:day' do
+  protect!
   msg = op(params[:department], params[:grade], params[:month], params[:day])
 end
 
@@ -57,8 +58,13 @@ get '/room/:room/:dept/:grade' do
   end 
 end
 
-get '/exam/:department/:grade/:month/:day' do
-  exams(params[:department], params[:grade], params[:month], params[:day])
+get '/exams/:department/:grade/:month/:day' do  
+  protect!
+  getExams(params[:department], params[:grade], params[:month], params[:day])
+end
+
+get '/exam/:department/:grade/:title' do
+  getExamsTitle(params[:department], params[:grade], params[:title])
 end
 
 def client

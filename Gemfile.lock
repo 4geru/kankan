@@ -17,6 +17,7 @@ GEM
     backports (3.7.0)
     builder (3.2.3)
     i18n (0.8.1)
+    levenshtein (0.2.2)
     line-bot-api (1.1.0)
     mini_portile2 (2.1.0)
     minitest (5.10.1)
@@ -55,6 +56,7 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord (< 5.0.0)
+  levenshtein
   line-bot-api
   nokogiri
   pg
@@ -65,4 +67,4 @@ DEPENDENCIES
   sqlite3
 
 BUNDLED WITH
-   1.13.6
+   1.14.6

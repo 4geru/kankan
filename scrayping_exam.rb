@@ -25,6 +25,12 @@ def timetable(doc, month = 0, day = 11)
       end
     end
   end
+  lectures.each_with_index do |lecture, i| 
+    if i != lectures.length - 1 and lectures[i]["title"] == lectures[i+1]["title"]
+      lecture["period"] = lecture["period"].to_s + "-" + lectures[i+1]["period"].to_s
+      lectures.delete(lecture[i+1])
+    end
+  end
   lectures
 end
 
@@ -50,10 +56,12 @@ def op()
 
   File.open("seeds.rb", "w") do |f| 
   [['igaku', 6], ['kango', 4]].each do |i|
+  # [['igaku', 1]].each do |i|
     department = i[0]
     year = i[1]
     year.times do |y|
       url = 'http://www.shiga-med.ac.jp/~hqgaku/SchoolCalendar/' + department + '/' + (y+1).to_s + '/calendar_d.html'
+      # url = 'http://www.shiga-med.ac.jp/~hqgaku/SchoolCalendar/' + department + '/' + (3).to_s + '/calendar_d.html'
       print url
       html_txt = open(url).read
       html_txt_utf8 = html_txt.kconv(Kconv::UTF8, Kconv::EUC)
