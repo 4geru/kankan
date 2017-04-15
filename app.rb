@@ -4,6 +4,7 @@ require 'sinatra/reloader' if development?
 require './models/count.rb'
 require 'line/bot'
 require './timetable'
+require './exam'
 require './messagebutton'
 require './messagecarousel'
 require './lib'
@@ -34,20 +35,7 @@ get '/protect' do
   'アクセス制限あり'
 end
 
-get '/test' do 
-  t = Time.new
-  m = params[:text].match(/(\d{1,2})\/(\d{1,2})/)
-  t = Time.parse("#{t.year}/#{m[1]}/#{m[2]}")
-  if m[1] == "12"
-    m[1] = '1'
-    msg = ["0", m[2]].to_s
-  else
-    msg = [m[1], m[2]].to_s
-  end
-end
-
 get '/api/:department/:grade/:month/:day' do
-  protect!
   msg = op(params[:department], params[:grade], params[:month], params[:day])
 end
 
@@ -67,6 +55,10 @@ get '/room/:room/:dept/:grade' do
       grade: params[:grade]
     })
   end 
+end
+
+get '/exam/:department/:grade/:month/:day' do
+  exams(params[:department], params[:grade], params[:month], params[:day])
 end
 
 def client
@@ -111,7 +103,7 @@ post '/callback' do
           begin
             m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)
             t = Time.parse("#{t.year}/#{m[1]}/#{m[2]}")
-            msg = exam(t.month, t.day)
+            msg = exams(dept, grade, t.month, t.day)
           rescue => e
             msg = '日付の入力を直してください 月/日'
           end

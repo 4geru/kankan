@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170411135428) do
+ActiveRecord::Schema.define(version: 20170412082858) do
 
   create_table "counts", force: :cascade do |t|
     t.integer  "number"
@@ -27,6 +27,15 @@ ActiveRecord::Schema.define(version: 20170411135428) do
     t.integer "grade"
     t.string  "department"
     t.integer "period"
+  end
+
+  create_table "exams", force: :cascade do |t|
+    t.integer  "grade"
+    t.string   "department"
+    t.string   "date"
+    t.string   "timetable"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
   end
 
   create_table "rooms", force: :cascade do |t|

@@ -10,3 +10,8 @@ end
 class Day < ActiveRecord::Base
 
 end
+
+
+class Exam < ActiveRecord::Base
+
+end
