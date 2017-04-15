@@ -68,6 +68,10 @@ get '/exam/:department/:grade/:title' do
   getExamsTitle(params[:department], params[:grade], params[:title].split('の')[0])
 end
 
+get '/weekday/:department/:grade/:word' do
+  getWeekName(params[:department], params[:grade], params[:word])
+end
+
 def client
   @client ||= Line::Bot::Client.new { |config|
     config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
@@ -102,11 +106,11 @@ post '/callback' do
           m.pushButton('看護学部', {"data": "type=dept&department=kango"})
           client.reply_message(event['replyToken'], m.reply('学部選択', '情報を登録してね！'))
         end
-        if (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間割/) and event.message['text'] =~ /今日/
+        if (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/) and event.message['text'] =~ /今日/
           msg = op(dept, grade, t.month, t.day)
-        elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間割/) and event.message['text'] =~ /明日/
+        elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/) and event.message['text'] =~ /明日/
           msg = op(dept, grade, t.month, t.day + 1)
-        elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間割/) and event.message['text'] =~ /(\d{1,2})\/(\d{1,2})/
+        elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/) and event.message['text'] =~ /(\d{1,2})\/(\d{1,2})/
           begin
             m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)
             t = Time.parse("#{t.year}/#{m[1]}/#{m[2]}")
@@ -114,11 +118,13 @@ post '/callback' do
           rescue => e
             msg = '日付の入力を直してください 月/日'
           end
+        elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/)
+          msg = getWeekName(dept, grade, event.message['text'])
         elsif (event.message['text'] =~ /試験/ or event.message['text'] =~ /テスト/) and event.message['text'] =~ /(\d{1,2})\/(\d{1,2})/
           begin
             m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)
             t = Time.parse("#{t.year}/#{m[1]}/#{m[2]}")
-            msg = exams(dept, grade, t.month, t.day)
+            msg = getExams(dept, grade, t.month, t.day)
           rescue => e
             msg = '日付の入力を直してください 月/日'
           end
