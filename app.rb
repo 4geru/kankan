@@ -36,7 +36,7 @@ get '/protect' do
 end
 
 get '/api/:department/:grade/:month/:day' do
-  protect!
+  # protect!
   msg = op(params[:department], params[:grade], params[:month], params[:day])
 end
 
@@ -59,16 +59,17 @@ get '/room/:room/:dept/:grade' do
 end
 
 get '/exams/:department/:grade/:month/:day' do  
-  protect!
+  # protect!
   getExams(params[:department], params[:grade], params[:month], params[:day])
 end
 
 get '/exam/:department/:grade/:title' do
-  # protect!
+  protect!
   getExamsTitle(params[:department], params[:grade], params[:title].split('の')[0])
 end
 
 get '/weekday/:department/:grade/:word' do
+  protect!
   getWeekName(params[:department], params[:grade], params[:word])
 end
 

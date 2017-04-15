@@ -1,5 +1,6 @@
 require 'levenshtein'
 
+# LINEのIDを取得できます
 def get_id(event)
   case event["type"]
   when "user"
@@ -28,3 +29,8 @@ def levenshteinWord(title, lectures)
   p min_lecture, min
   return min_lecture, min
 end
+
+def weekName(num)
+  weeks = ['日', '月', '火', '水', '木', '金', '土']
+  weeks[num]
+end 
