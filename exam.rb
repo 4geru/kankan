@@ -41,6 +41,7 @@ end
 
 def getExamsTitle(department, grade, title)
   exams = Exam.where('(timetable like ?) and (grade = ?) and (department = ?)', "%#{title}%" , grade, department).uniq
+  return 'その教科はありません' if exams.length == 0
   dept = (department == 'igaku' ? '医学部' : '看護学部')
   msg = ""
   min_exams = []

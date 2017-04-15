@@ -64,7 +64,8 @@ get '/exams/:department/:grade/:month/:day' do
 end
 
 get '/exam/:department/:grade/:title' do
-  getExamsTitle(params[:department], params[:grade], params[:title])
+  # protect!
+  getExamsTitle(params[:department], params[:grade], params[:title].split('の')[0])
 end
 
 def client
@@ -105,14 +106,6 @@ post '/callback' do
           msg = op(dept, grade, t.month, t.day)
         elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間割/) and event.message['text'] =~ /明日/
           msg = op(dept, grade, t.month, t.day + 1)
-        elsif (event.message['text'] =~ /試験/ or event.message['text'] =~ /テスト/)  and event.message['text'] =~ /(\d{1,2})\/(\d{1,2})/
-          begin
-            m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)
-            t = Time.parse("#{t.year}/#{m[1]}/#{m[2]}")
-            msg = exams(dept, grade, t.month, t.day)
-          rescue => e
-            msg = '日付の入力を直してください 月/日'
-          end
         elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間割/) and event.message['text'] =~ /(\d{1,2})\/(\d{1,2})/
           begin
             m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)
@@ -121,8 +114,22 @@ post '/callback' do
           rescue => e
             msg = '日付の入力を直してください 月/日'
           end
-        end
-        
+        elsif (event.message['text'] =~ /試験/ or event.message['text'] =~ /テスト/) and event.message['text'] =~ /(\d{1,2})\/(\d{1,2})/
+          begin
+            m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)
+            t = Time.parse("#{t.year}/#{m[1]}/#{m[2]}")
+            msg = exams(dept, grade, t.month, t.day)
+          rescue => e
+            msg = '日付の入力を直してください 月/日'
+          end
+        elsif (event.message['text'] =~ /試験/ or event.message['text'] =~ /テスト/) and event.message['text'] =~ /の/
+          begin
+            title = event.message['text'].split('の')[0]
+            getExamsTitle(dept, grade, title)
+          rescue => e
+            msg = 'その教科はありません'
+          end
+        end        
         if not msg.nil?
           message = {
             type: 'text',
