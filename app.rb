@@ -141,6 +141,19 @@ post '/callback' do
           m.pushButton('医学部',   {"data": "type=dept&department=igaku"})
           m.pushButton('看護学部', {"data": "type=dept&department=kango"})
           client.reply_message(event['replyToken'], m.reply('学部選択', '設定を変更する？学部を教えてね！'))
+        elsif event.message['text'] =~ /カンカン/ and (event.message['text'] =~ /ヘルプ/ or event.message['text'] =~ /help/)
+          content = [
+            "[今日, 明日, 曜日, 日付(月/日)]の授業は？",
+            "  時間割を教えるよ！",
+            "[科目(略称可)]のテストは？",
+            "  テストの時間割を教えるよ！",
+            "[日付(月/日)]のテストは？",
+            "  指定した日から2週間以内のテストの時間割を教えるよ！",
+            "カンカン設定！",
+            "  学部,学年を変更できるよ！",
+            "カンカンヘルプ１",
+            "  カンカンへ指示ができる内容一覧が見れるよ！"]
+          msg = content.join("\n")
         end        
         if not msg.nil?
           message = {
