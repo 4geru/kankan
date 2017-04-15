@@ -125,7 +125,7 @@ post '/callback' do
         elsif (event.message['text'] =~ /試験/ or event.message['text'] =~ /テスト/) and event.message['text'] =~ /の/
           begin
             title = event.message['text'].split('の')[0]
-            getExamsTitle(dept, grade, title)
+            msg = getExamsTitle(dept, grade, title)
           rescue => e
             msg = 'その教科はありません'
           end
