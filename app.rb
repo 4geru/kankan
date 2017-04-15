@@ -136,6 +136,11 @@ post '/callback' do
           rescue => e
             msg = 'その教科はありません'
           end
+        elsif event.message['text'] =~ /カンカン/ and event.message['text'] =~ /設定/
+          m = MessageButton.new('学部選択中')
+          m.pushButton('医学部',   {"data": "type=dept&department=igaku"})
+          m.pushButton('看護学部', {"data": "type=dept&department=kango"})
+          client.reply_message(event['replyToken'], m.reply('学部選択', '設定を変更する？学部を教えてね！'))
         end        
         if not msg.nil?
           message = {
