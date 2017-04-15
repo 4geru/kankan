@@ -122,10 +122,12 @@ post '/callback' do
           begin
             m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)
             t = Time.parse("#{t.year}/#{m[1]}/#{m[2]}")
-            msg = getEndTime(dept, grade, m[1], m[2])
+            msg = getEndWeekName(dept, grade, m[1], m[2])
           rescue => e
             msg = '日付の入力を直してください 月/日'
           end
+        elsif ((event.message['text'] =~ /何時まで/ or event.message['text'] =~ /終了時間/)
+          msg = getWeekName(dept, grade, event.message['text'])
         elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/) and event.message['text'] =~ /今日/
           msg = op(dept, grade, t.month, t.day)
         elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/) and event.message['text'] =~ /明日/
