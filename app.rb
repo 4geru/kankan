@@ -36,7 +36,7 @@ get '/protect' do
 end
 
 get '/api/:department/:grade/:month/:day' do
-  # protect!
+  protect!
   msg = op(params[:department], params[:grade], params[:month], params[:day])
 end
 
@@ -59,7 +59,7 @@ get '/room/:room/:dept/:grade' do
 end
 
 get '/exams/:department/:grade/:month/:day' do  
-  # protect!
+  protect!
   getExams(params[:department], params[:grade], params[:month], params[:day])
 end
 
@@ -69,8 +69,13 @@ get '/exam/:department/:grade/:title' do
 end
 
 get '/weekday/:department/:grade/:word' do
-  # protect!
+  protect!
   getWeekName(params[:department], params[:grade], params[:word])
+end
+
+get '/time/:department/:grade/:month/:day' do
+  protect!
+  getEndTime(params[:department], params[:grade], params[:month], params[:day])
 end
 
 def client
@@ -156,6 +161,20 @@ post '/callback' do
             "\u{1F4AC}カンカンヘルプ！",
             "　\u{2705} 指示の一覧が見れるよ！"]
           msg = content.join("\n")
+        elsif event.message['text'] =~ /何時まで？/ and event.message['text'] =~ /今日/
+          msg = getEndTime(dept, grade, t.month, t.day)
+        elsif event.message['text'] =~ /何時まで？/ and event.message['text'] =~ /明日/
+          msg = getEndTime(dept, grade, t.month, t.day + 1)
+        elsif event.message['text'] =~ /何時まで？/ and event.message['text'] =~ /明後日/
+          msg = getEndTime(dept, grade, t.month, t.day + 2)
+        elsif event.message['text'] =~ /何時まで？/ and event.message['text'] =~ /(\d{1,2})\/(\d{1,2})/
+          begin
+            m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)
+            t = Time.parse("#{t.year}/#{m[1]}/#{m[2]}")
+            msg = getEndTime(dept, grade, m[1], m[2])
+          rescue => e
+            msg = '日付の入力を直してください 月/日'
+          end
         end        
         if not msg.nil?
           message = {
