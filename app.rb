@@ -112,13 +112,13 @@ post '/callback' do
           m.pushButton('看護学部', {"data": "type=dept&department=kango"})
           client.reply_message(event['replyToken'], m.reply('学部選択', '情報を登録してね！'))
         end
-        if (event.message['text'] =~ /何時まで？/ or event.message['text'] =~ /終了時間/) and event.message['text'] =~ /今日/
+        if (event.message['text'] =~ /何時まで/ or event.message['text'] =~ /終了時間/) and event.message['text'] =~ /今日/
           msg = getEndTime(dept, grade, t.month, t.day)
-        elsif (event.message['text'] =~ /何時まで？/ or event.message['text'] =~ /終了時間/) and event.message['text'] =~ /明日/
+        elsif (event.message['text'] =~ /何時まで/ or event.message['text'] =~ /終了時間/) and event.message['text'] =~ /明日/
           msg = getEndTime(dept, grade, t.month, t.day + 1)
-        elsif (event.message['text'] =~ /何時まで？/ or event.message['text'] =~ /終了時間/) and event.message['text'] =~ /明後日/
+        elsif (event.message['text'] =~ /何時まで/ or event.message['text'] =~ /終了時間/) and event.message['text'] =~ /明後日/
           msg = getEndTime(dept, grade, t.month, t.day + 2)
-        elsif (event.message['text'] =~ /何時まで？/ or event.message['text'] =~ /終了時間/) and event.message['text'] =~ /(\d{1,2})\/(\d{1,2})/
+        elsif (event.message['text'] =~ /何時まで/ or event.message['text'] =~ /終了時間/) and event.message['text'] =~ /(\d{1,2})\/(\d{1,2})/
           begin
             m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)
             t = Time.parse("#{t.year}/#{m[1]}/#{m[2]}")
