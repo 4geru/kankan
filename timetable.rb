@@ -25,17 +25,17 @@ end
 def getWeekName(department, grade, params)
   weeks = [['日','にちよう'], ['月','げつよう'], ['火', 'かよう'], ['水', 'すいよう'], ['木', 'もくよう'], ['金', 'きんよう'], ['土', 'どよう']]
   t = Time.new
-  p t.wday
   p weeks[t.wday]
   day = -1
   weeks.each_with_index do |week, i|
     week.each do |word|
       if params.match(word)
+        p 'true',word
         day = i
       end
     end
   end
-  nil if day == -1
+  return nil if day == -1
   t += (60 * 60 * 24)
   7.times do |i|
     break if t.wday == day

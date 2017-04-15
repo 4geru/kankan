@@ -69,7 +69,7 @@ get '/exam/:department/:grade/:title' do
 end
 
 get '/weekday/:department/:grade/:word' do
-  protect!
+  # protect!
   getWeekName(params[:department], params[:grade], params[:word])
 end
 
@@ -143,15 +143,15 @@ post '/callback' do
           client.reply_message(event['replyToken'], m.reply('学部選択', '設定を変更する？学部を教えてね！'))
         elsif event.message['text'] =~ /カンカン/ and (event.message['text'] =~ /ヘルプ/ or event.message['text'] =~ /help/)
           content = [
-            "\u{1F4AC} [今日,曜日,月/日]の授業は？",
+            "\u{1F4AC}[今日,曜日,日付(月/日)]の授業は？",
             "　\u{2705} 時間割を教えるよ！",
-            "\u{1F4AC} [科目(略称可)]のテストは？",
+            "\u{1F4AC}[科目(略称可)]のテストは？",
             "　\u{2705} 試験を教えるよ！",
-            "\u{1F4AC} [日付(月/日)]のテストは？",
+            "\u{1F4AC}[日付(月/日)]のテストは？",
             "　\u{2705} 2週間以内の試験を教えるよ！",
-            "\u{1F4AC} カンカン設定！",
+            "\u{1F4AC}カンカン設定！",
             "　\u{2705} 学部,学年を変更できるよ！",
-            "\u{1F4AC} カンカンヘルプ！",
+            "\u{1F4AC}カンカンヘルプ！",
             "　\u{2705} 指示の一覧が見れるよ！"]
           msg = content.join("\n")
         end        
