@@ -143,7 +143,7 @@ post '/callback' do
           client.reply_message(event['replyToken'], m.reply('学部選択', '設定を変更する？学部を教えてね！'))
         elsif event.message['text'] =~ /カンカン/ and (event.message['text'] =~ /ヘルプ/ or event.message['text'] =~ /help/)
           content = [
-            "\u{1F4AC}[今日, 曜日, 日付(月/日)]の授業は？",
+            "\u{1F4AC}[今日,曜日,日付(月/日)]の授業は？",
             "\u{2705}時間割を教えるよ！",
             "\u{1F4AC}[科目(略称可)]のテストは？",
             "\u{2705}試験を教えるよ！",
