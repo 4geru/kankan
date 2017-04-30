@@ -40,7 +40,7 @@ def getExams(department, grade, month, day)
 end
 
 def getExamsTitle(department, grade, title)
-  exams = Exam.where('(timetable like ?) and (grade = ?) and (department = ?)', "%#{title}%" , grade, department).uniq
+  exams = Exam.where('(timetable like ?) and (grade = ?) and (department = ?)', "%#{title[0]}%" , grade, department).uniq
   return 'その教科はありません' if exams.length == 0
   dept = (department == 'igaku' ? '医学科' : '看護学科')
   msg = ""
