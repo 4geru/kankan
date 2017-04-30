@@ -131,7 +131,7 @@ post '/callback' do
           rescue => e
             msg = '日付の入力を直してください 月/日'
           end
-        elsif (event.message['text'] =~ /何時まで/ or event.message['text'] =~ /終了時間/)
+        elsif (event.message['text'] =~ /何時まで/ or event.message['text'] =~ /時間/)
           msg = getEndWeekName(dept, grade, event.message['text'])
         elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/) and event.message['text'] =~ /今日/
           msg = op(dept, grade, t.month, t.day)
