@@ -44,7 +44,7 @@ get '/room/:room/:dept/:grade' do
   protect!
   room = Room.where(channel_id: params[:room])[0]
 
-  if not room 
+  if not room
     room = Room.create({
       channel_id: params[:room],
       department: params[:dept],
@@ -55,10 +55,10 @@ get '/room/:room/:dept/:grade' do
       department: params[:dept],
       grade: params[:grade]
     })
-  end 
+  end
 end
 
-get '/exams/:department/:grade/:month/:day' do  
+get '/exams/:department/:grade/:month/:day' do
   protect!
   getExams(params[:department], params[:grade], params[:month], params[:day])
 end
@@ -85,6 +85,7 @@ end
 
 def client
   @client ||= Line::Bot::Client.new { |config|
+
     config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
     config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
   }
@@ -109,14 +110,14 @@ post '/callback' do
 
         channel_id = get_id(event["source"])
         room  = Room.where(channel_id: channel_id)[0]
-        dept  = room["department"]
-        grade = room["grade"]
-        if not room 
+        if not room
           m = MessageButton.new('学科選択中')
           m.pushButton('医学科',   {"data": "type=dept&department=igaku"})
           m.pushButton('看護学科', {"data": "type=dept&department=kango"})
           client.reply_message(event['replyToken'], m.reply('学科選択', '情報を登録してね！'))
         end
+        dept  = room["department"]
+        grade = room["grade"]
         if (event.message['text'] =~ /何時まで/ or event.message['text'] =~ /終了時間/) and event.message['text'] =~ /今日/
           msg = getEndTime(dept, grade, t.month, t.day)
         elsif (event.message['text'] =~ /何時まで/ or event.message['text'] =~ /終了時間/) and event.message['text'] =~ /明日/
@@ -131,14 +132,12 @@ post '/callback' do
           rescue => e
             msg = '日付の入力を直してください 月/日'
           end
-        elsif (event.message['text'] =~ /何時まで/ or event.message['text'] =~ /時間/)
-          msg = getEndWeekName(dept, grade, event.message['text'])
         elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/) and event.message['text'] =~ /今日/
           msg = op(dept, grade, t.month, t.day)
         elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/) and event.message['text'] =~ /明日/
-          msg = op(dept, grade, t.month, t.day + 1)
+          msg = op(dept, grade, (t + 1.days).month, (t + 1.days).day)
         elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/) and event.message['text'] =~ /明後日/
-          msg = op(dept, grade, t.month, t.day + 2)
+          msg = op(dept, grade, (t + 2.days).month, (t + 2.days).day)
         elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/) and event.message['text'] =~ /(\d{1,2})\/(\d{1,2})/
           begin
             m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)
@@ -184,7 +183,7 @@ post '/callback' do
             "\u{1F4AC}カンカンヘルプ！",
             "　\u{2705} 指示の一覧が見れるよ！"]
           msg = content.join("\n")
-        end        
+        end
         if not msg.nil?
           message = {
             type: 'text',
@@ -222,7 +221,7 @@ post '/callback' do
             m1.getButtons('医学科 > 学年選択 > 低学年', '学年を教えてね！'),
             m2.getButtons('医学科 > 学年選択 > 高学年', '学年を教えてね！')
           ]))
-        when 'kango' 
+        when 'kango'
           m = MessageButton.new('学年選択中')
           m.pushButton('1年', {"data": "type=grade&department=kango&grade=1"})
           m.pushButton('2年', {"data": "type=grade&department=kango&grade=2"})
@@ -234,7 +233,7 @@ post '/callback' do
         channel_id = get_id(event["source"])
         room = Room.where(channel_id: channel_id)[0]
 
-        if not room 
+        if not room
           room = Room.create({
             channel_id: channel_id,
             department: data["department"],
@@ -245,16 +244,16 @@ post '/callback' do
             department: data["department"],
             grade: data["grade"]
           })
-        end  
+        end
         dept = (room["department"] == 'igaku' ? '医学科' : '看護学科')
         word = "ありがとう！\n#{dept}の#{room["grade"]}年生だね！登録したよ！"
         message = {
           type: 'text',
           text: word
         }
-        client.reply_message(event['replyToken'], message)       
+        client.reply_message(event['replyToken'], message)
       end
-      
+
     end
   end
 
