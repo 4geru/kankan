@@ -231,7 +231,7 @@ post '/callback' do
           client.reply_message(event['replyToken'], m.reply('看護学科 > 学年選択', '学年を教えてね！'))
         end
       when 'grade'
-        channel_id = get_id(event["source"])
+        channel_id = event["source"]["userId"]#get_id(event["source"])
         room = Room.where(channel_id: channel_id)[0]
 
         if not room 
