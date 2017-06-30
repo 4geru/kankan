@@ -107,7 +107,7 @@ post '/callback' do
         msg = nil
         t = Time.new()
 
-        channel_id = get_id(event["source"])
+        channel_id = event["source"]["userId"]#get_id(event["source"])
         room  = Room.where(channel_id: channel_id)[0]
         dept  = room["department"]
         grade = room["grade"]
