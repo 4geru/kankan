@@ -85,6 +85,8 @@ end
 
 def client
   @client ||= Line::Bot::Client.new { |config|
+    ENV['LINE_CHANNEL_SECRET'] = "d8673490f25d41d3a529c290bb8efb19"
+    ENV['LINE_CHANNEL_TOKEN'] = "0pWAyNM5bAfjyngJu1m2Ee6e+Wcz/b8o2SGFgzhMTgMekbB02hwtMdJbV9m+Vsp6hDcBn7hvFOF15qkzj77Kv9zG0G77ZkjvmcZn0Z6fuLLxhcdpFwwcaAE1evHpP9wYVz7Dq+QPwKWp6XBYPeIV2QdB04t89/1O/w1cDnyilFU="
 
     config.channel_secret = ENV["LINE_CHANNEL_SECRET"]
     config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
@@ -108,8 +110,12 @@ post '/callback' do
         msg = nil
         t = Time.new()
 
-        channel_id = event["source"]["userId"]#get_id(event["source"])
+        channel_id = event["source"]["userId"]
         room  = Room.where(channel_id: channel_id)[0]
+        if room.nil?
+          get_id(event["source"])
+          room  = Room.where(channel_id: channel_id)[0]
+        end
         if not room
           m = MessageButton.new('学科選択中')
           m.pushButton('医学科',   {"data": "type=dept&department=igaku"})
