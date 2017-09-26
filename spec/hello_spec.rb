@@ -1,8 +1,12 @@
-require_relative '../src/hello'
+require 'spec_helper'
+require 'hello'
 
-RSpec.describe Hello do
+describe Hello do
   it "message return hello" do
     expect(Hello.new.message).to eq "hello"
   end
-end
 
+  it "message return hello" do
+    expect(Hello.new.message('this')).to eq "this"
+  end
+end

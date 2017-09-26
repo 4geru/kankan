@@ -1,6 +1,6 @@
 class MessageButton
   def initialize(altText = nil)
-    @buttons = [] 
+    @buttons = []
     @altText = altText
   end
 
@@ -21,14 +21,14 @@ class MessageButton
   end
 
   def getButtons(title = nil, text = nil)
-  return nil if @buttons.length == 0
-  return nil if title.nil?
-  return nil if text.nil?
-  {
-    "title": title,
-    "text": text,
-    "actions": @buttons
-  }
+    return nil if @buttons.length == 0
+    return nil if title.nil?
+    return nil if text.nil?
+    {
+      "title": title,
+      "text": text,
+      "actions": @buttons
+    }
   end
   # option : {data=nil, url=nil}
   def pushButton(label='', option)

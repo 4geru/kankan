@@ -9,8 +9,11 @@ gem 'sinatra-activerecord'
 gem 'line-bot-api'
 gem 'nokogiri'
 gem 'levenshtein'
+# test
+gem "rspec", ">= 3.0.0"
 group :development do
   gem 'sqlite3'
+  gem "simplecov"
 end
 
 group :production do
