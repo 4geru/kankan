@@ -53,9 +53,8 @@ def examGetHP(td)
 end
 
 def exam()
-  File.open("db/seeds.rb", "w") do |f| 
-  [['igaku', 6], ['kango', 4]].each do |i|
-  # [['igaku', 1]].each do |i|
+  # [['igaku', 6], ['kango', 4]].each do |i|
+  [['igaku', 1]].each do |i|
     department = i[0]
     year = i[1]
     year.times do |y|
@@ -80,14 +79,13 @@ def exam()
             'date' => date,
             'timetable' => (lectures[:classes].to_s || ""),
           }
-          puts "Exam.create(" + obj.to_s + ")"
-          f.puts("Exam.create(" + obj.to_s + ")")
+          Exam.create(obj)
+          # f.puts("Exam.create(" + obj.to_s + ")")
         end
       end
       sleep 3
     end
   end
 
-  end
   'ok'
 end

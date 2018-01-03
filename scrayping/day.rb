@@ -13,7 +13,6 @@ def timetable(doc, month = 0, day = 11)
     key = ['period', 'title', 'professor', 'subtitle']
     info.each_slice(4).to_a.each do | inf |
       lecture = {}
-      print "%d %s\n" % [period, inf]
       inf[0] = period
       inf.push('') if inf.length == 2
       inf.push('') if inf.length == 3
@@ -48,8 +47,8 @@ def getHP(td)
 end
 
 def day()
-  File.open("db/seeds.rb", "a") do |f| 
-  [['igaku', 6], ['kango', 4]].each do |i|
+  # [['igaku', 6], ['kango', 4]].each do |i|
+  [['igaku', 1]].each do |i|
     department = i[0]
     year = i[1]
     year.times do |y|
@@ -75,13 +74,11 @@ def day()
             'reason' => (lectures[:title] || ""),
           }
 
-          f.puts("Day.create(" + obj.to_s + ")")
+          Day.create(obj)
         end
       end
       sleep 3
     end
-  end
-
   end
   'ok'
 end
