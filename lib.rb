@@ -34,3 +34,25 @@ def weekName(num)
   weeks = ['日', '月', '火', '水', '木', '金', '土']
   weeks[num]
 end 
+
+def getDate(message)
+  t = Time.new()
+  if message =~ /今日/
+    t = t
+  elsif message =~ /明日/
+    t =  t.day + 1
+  elsif message =~ /明後日/
+    t = t.day + 2
+  elsif message =~ /(\d{1,2})\/(\d{1,2})/
+    begin
+      m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)
+      t = Time.parse("#{t.year}/#{m[1]}/#{m[2]}")
+    rescue => e
+      puts '日付の入力を直してください 月/日'
+      t = nil
+    end
+  else 
+    t = nil
+  end
+  t
+end

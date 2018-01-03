@@ -1,4 +1,5 @@
-
+require './src/event/postback'
+require './src/start'
 def client
   @client ||= Line::Bot::Client.new { |config|
 
@@ -22,7 +23,6 @@ post '/callback' do
       case event.type
       when Line::Bot::Event::MessageType::Text
         msg = nil
-        t = Time.new()
 
         channel_id = event["source"]["userId"]
         room  = Room.where(channel_id: channel_id)[0]
@@ -38,33 +38,19 @@ post '/callback' do
         end
         dept  = room["department"]
         grade = room["grade"]
-        if (event.message['text'] =~ /何時まで/ or event.message['text'] =~ /終了時間/) and event.message['text'] =~ /今日/
-          msg = getEndTime(dept, grade, t.month, t.day)
-        elsif (event.message['text'] =~ /何時まで/ or event.message['text'] =~ /終了時間/) and event.message['text'] =~ /明日/
-          msg = getEndTime(dept, grade, t.month, t.day + 1)
-        elsif (event.message['text'] =~ /何時まで/ or event.message['text'] =~ /終了時間/) and event.message['text'] =~ /明後日/
-          msg = getEndTime(dept, grade, t.month, t.day + 2)
-        elsif (event.message['text'] =~ /何時まで/ or event.message['text'] =~ /終了時間/) and event.message['text'] =~ /(\d{1,2})\/(\d{1,2})/
-          begin
-            m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)
-            t = Time.parse("#{t.year}/#{m[1]}/#{m[2]}")
-            msg = getEndTime(dept, grade, m[1], m[2])
-          rescue => e
-            msg = '日付の入力を直してください 月/日'
+        if (event.message['text'] =~ /何時まで/ or event.message['text'] =~ /終了時間/)
+          t = getDate(event.message['text'])
+          if t.nil?
+            msg = '日付が見つかりませんでした。'
+          else
+            msg = getEndTime(dept, grade, t.month, t.day)
           end
-        elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/) and event.message['text'] =~ /今日/
-          msg = op(dept, grade, t.month, t.day)
-        elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/) and event.message['text'] =~ /明日/
-          msg = op(dept, grade, (t + 1.days).month, (t + 1.days).day)
-        elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/) and event.message['text'] =~ /明後日/
-          msg = op(dept, grade, (t + 2.days).month, (t + 2.days).day)
-        elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/) and event.message['text'] =~ /(\d{1,2})\/(\d{1,2})/
-          begin
-            m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)
-            t = Time.parse("#{t.year}/#{m[1]}/#{m[2]}")
-            msg = op(dept, grade, m[1], m[2])
-          rescue => e
-            msg = '日付の入力を直してください 月/日'
+        elsif (event.message['text'] =~ /授業/
+          t = getDate(event.message['text'])
+          if t.nil?
+            msg = '日付が見つかりませんでした。'
+          else
+            msg = op(dept, grade, t.month, t.day)
           end
         elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/)
           msg = getWeekName(dept, grade, event.message['text'])
@@ -113,67 +99,11 @@ post '/callback' do
         end
       end
     when Line::Bot::Event::Join
-      m = MessageButton.new('学科選択中')
-      m.pushButton('医学科',   {"data": "type=dept&department=igaku"})
-      m.pushButton('看護学科', {"data": "type=dept&department=kango"})
-      client.reply_message(event['replyToken'], m.reply('学科選択', '初めまして！カンカンです！学科を教えてね！'))
-    when Line::Bot::Event::Follow
-      m = MessageButton.new('学科選択中')
-      m.pushButton('医学科',   {"data": "type=dept&department=igaku"})
-      m.pushButton('看護学科', {"data": "type=dept&department=kango"})
-      client.reply_message(event['replyToken'], m.reply('学科選択', '初めまして！カンカンです！学科を教えてね！'))
+      client.reply_message(event['replyToken'], startAction)
+    when Line::Bot::Event::Follow    
+      client.reply_message(event['replyToken'], startAction)
     when Line::Bot::Event::Postback
-      data = Hash[URI::decode_www_form(event["postback"]["data"])]
-      case data["type"]
-      when 'dept'
-        case data["department"]
-        when 'igaku'
-          m  = MessageCarousel.new('学年選択中')
-          m1 = MessageButton.new('hoge')
-          m2 = MessageButton.new('hoge')
-          m1.pushButton('1年', {"data": "type=grade&department=igaku&grade=1"})
-          m1.pushButton('2年', {"data": "type=grade&department=igaku&grade=2"})
-          m1.pushButton('3年', {"data": "type=grade&department=igaku&grade=3"})
-          m2.pushButton('4年', {"data": "type=grade&department=igaku&grade=4"})
-          m2.pushButton('5年', {"data": "type=grade&department=igaku&grade=5"})
-          m2.pushButton('6年', {"data": "type=grade&department=igaku&grade=6"})
-          client.reply_message(event['replyToken'], m.reply([
-            m1.getButtons('医学科 > 学年選択 > 低学年', '学年を教えてね！'),
-            m2.getButtons('医学科 > 学年選択 > 高学年', '学年を教えてね！')
-          ]))
-        when 'kango'
-          m = MessageButton.new('学年選択中')
-          m.pushButton('1年', {"data": "type=grade&department=kango&grade=1"})
-          m.pushButton('2年', {"data": "type=grade&department=kango&grade=2"})
-          m.pushButton('3年', {"data": "type=grade&department=kango&grade=3"})
-          m.pushButton('4年', {"data": "type=grade&department=kango&grade=4"})
-          client.reply_message(event['replyToken'], m.reply('看護学科 > 学年選択', '学年を教えてね！'))
-        end
-      when 'grade'
-        channel_id = event["source"]["userId"]#get_id(event["source"])
-        room = Room.where(channel_id: channel_id)[0]
-
-        if not room
-          room = Room.create({
-            channel_id: channel_id,
-            department: data["department"],
-            grade: data["grade"]
-          })
-        else
-          room.update!({
-            department: data["department"],
-            grade: data["grade"]
-          })
-        end
-        dept = (room["department"] == 'igaku' ? '医学科' : '看護学科')
-        word = "ありがとう！\n#{dept}の#{room["grade"]}年生だね！登録したよ！"
-        message = {
-          type: 'text',
-          text: word
-        }
-        client.reply_message(event['replyToken'], message)
-      end
-
+      Actionpostback(event)
     end
   end
 
