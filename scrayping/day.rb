@@ -47,9 +47,8 @@ def getHP(td)
   end
 end
 
-def op()
-
-  File.open("seeds.rb", "w") do |f| 
+def day()
+  File.open("db/seeds.rb", "a") do |f| 
   [['igaku', 6], ['kango', 4]].each do |i|
     department = i[0]
     year = i[1]
@@ -86,5 +85,3 @@ def op()
   end
   'ok'
 end
-
-p op()

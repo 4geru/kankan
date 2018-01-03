@@ -8,6 +8,7 @@ require './exam'
 require './messagebutton'
 require './messagecarousel'
 require './lib'
+require './scrayping'
 
 helpers do
   def protect!

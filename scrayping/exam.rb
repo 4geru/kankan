@@ -2,7 +2,7 @@ require 'nokogiri'
 require 'open-uri'
 require 'kconv'
 
-def timetable(doc, month = 0, day = 11)
+def examTimetable(doc, month = 0, day = 11)
   tr = doc[2..12]
   lectures = []
   0.step(8, 2) do |i|
@@ -34,7 +34,7 @@ def timetable(doc, month = 0, day = 11)
   lectures
 end
 
-def getHP(td)
+def examGetHP(td)
   if td.length == 3
     # 休みの日
     return nil
@@ -45,16 +45,15 @@ def getHP(td)
       isholiday = false if t.inner_text.gsub(/[\t\r\n]/, '') != ''
     end
     return nil if isholiday 
-    timetable = timetable(td)
+    timetable = examTimetable(td)
     return nil if timetable.length == 0
 
     return {isholiday: false, classes: timetable}
   end
 end
 
-def op()
-
-  File.open("seeds.rb", "w") do |f| 
+def exam()
+  File.open("db/seeds.rb", "w") do |f| 
   [['igaku', 6], ['kango', 4]].each do |i|
   # [['igaku', 1]].each do |i|
     department = i[0]
@@ -62,7 +61,7 @@ def op()
     year.times do |y|
       url = 'http://www.shiga-med.ac.jp/~hqgaku/SchoolCalendar/' + department + '/' + (y+1).to_s + '/calendar_d.html'
       # url = 'http://www.shiga-med.ac.jp/~hqgaku/SchoolCalendar/' + department + '/' + (3).to_s + '/calendar_d.html'
-      print url
+      puts url
       html_txt = open(url).read
       html_txt_utf8 = html_txt.kconv(Kconv::UTF8, Kconv::EUC)
       doc = Nokogiri(html_txt_utf8,'nil','UTF-8')
@@ -70,7 +69,8 @@ def op()
       doc.xpath('//table[@class="table_layout"]').each_with_index do |table, i|
         table.xpath('tr').each_with_index do |tr, j|
           next if tr.xpath('td').length == 7
-          lectures = getHP(tr.xpath('td'))
+          lectures = examGetHP(tr.xpath('td'))
+          # next if lectures[:classes].nil?
           next if lectures == nil
           date = "2017/%d/%d" % [(i + 4)%12, j]
           # p date
@@ -80,7 +80,7 @@ def op()
             'date' => date,
             'timetable' => (lectures[:classes].to_s || ""),
           }
-
+          puts "Exam.create(" + obj.to_s + ")"
           f.puts("Exam.create(" + obj.to_s + ")")
         end
       end
@@ -91,5 +91,3 @@ def op()
   end
   'ok'
 end
-
-p op()
