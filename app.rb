@@ -9,6 +9,8 @@ require './messagebutton'
 require './messagecarousel'
 require './lib'
 require './scrayping'
+require 'dotenv'
+Dotenv.load
 
 require './src/web'
 require './src/line'

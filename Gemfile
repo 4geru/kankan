@@ -11,6 +11,8 @@ gem 'nokogiri'
 gem 'levenshtein'
 # test
 gem "rspec", ">= 3.0.0"
+
+gem 'dotenv'
 group :development do
   gem 'sqlite3'
   gem "simplecov"

@@ -45,7 +45,7 @@ post '/callback' do
           else
             msg = getEndTime(dept, grade, t.month, t.day)
           end
-        elsif (event.message['text'] =~ /授業/
+        elsif event.message['text'] =~ /授業/
           t = getDate(event.message['text'])
           if t.nil?
             msg = '日付が見つかりませんでした。'
@@ -100,7 +100,7 @@ post '/callback' do
       end
     when Line::Bot::Event::Join
       client.reply_message(event['replyToken'], startAction)
-    when Line::Bot::Event::Follow    
+    when Line::Bot::Event::Follow
       client.reply_message(event['replyToken'], startAction)
     when Line::Bot::Event::Postback
       Actionpostback(event)
