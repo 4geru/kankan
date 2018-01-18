@@ -38,6 +38,7 @@ post '/callback' do
         end
         dept  = room["department"]
         grade = room["grade"]
+
         if (event.message['text'] =~ /何時まで/ or event.message['text'] =~ /終了時間/)
           t = getDate(event.message['text'])
           if t.nil?
@@ -45,6 +46,12 @@ post '/callback' do
           else
             msg = getEndTime(dept, grade, t.month, t.day)
           end
+        # bus
+        elsif event.message['text'] =~ /バス/
+            m = MessageConfirm.new('バス出発地点洗濯中')
+            m.pushButton('瀬田駅',   {"data": "type=bus&pin=seta"})
+            m.pushButton('医大西門', {"data": "type=bus&pin=idai"})
+            client.reply_message(event['replyToken'], m.reply("バス時刻表\nどこから出発しますか？"))
         # update
         elsif event.message['text'] =~ /アップデート/
           if Exam.last.updated_at.yday != Time.now.yday

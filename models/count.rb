@@ -11,7 +11,17 @@ class Day < ActiveRecord::Base
 
 end
 
-
 class Exam < ActiveRecord::Base
+
+end
+
+class Trip < ActiveRecord::Base
+  def startAt
+    Time.parse("2018/1/6 " + self.start_time)
+  end
+
+  def goalAt
+    Time.parse(self.goal_time)
+  end
 
 end

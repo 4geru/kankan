@@ -58,5 +58,11 @@ def Actionpostback(event)
     when 'false'
       client.reply_message(event['replyToken'], { type: 'text', text: 'アップデートはキャンセルしたよ' })
     end
+  when 'bus'
+    if data['pin'] == 'seta'
+      client.reply_message(event['replyToken'], { type: 'text', text: busStartAt('瀬田駅') })
+    else
+      client.reply_message(event['replyToken'], { type: 'text', text: busStartAt('医大西門') })
+    end
   end
 end
