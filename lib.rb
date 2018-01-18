@@ -14,7 +14,7 @@ def get_id(event)
   end
 end
 
-# 編集距離を求めてくれます 
+# 編集距離を求めてくれます
 def levenshteinWord(title, lectures)
   # title = "薬"
   # lectures = ["薬理学実習", "神経薬理学総論", "薬理学", "薬物医療学"]
@@ -31,6 +31,6 @@ def levenshteinWord(title, lectures)
 end
 
 def weekName(num)
-  weeks = ['日', '月', '火', '水', '木', '金', '土']
+  weeks = ['月', '火', '水', '木', '金', '土', '日']
   weeks[num]
-end 
+end
