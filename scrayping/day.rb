@@ -51,8 +51,10 @@ def getTr(td)
   end
 end
 
-def getDay(department, year)
-  url = 'http://www.shiga-med.ac.jp/~hqgaku/SchoolCalendar/' + department + '/' + (year + 1).to_s + '/calendar_d.html'
+def getDay(department, grade)
+  puts grade
+  puts department
+  url = "http://www.shiga-med.ac.jp/~hqgaku/SchoolCalendar/#{department}/#{grade}/calendar_d.html"
   print url
   html_txt = open(url).read
   html_txt_utf8 = html_txt.kconv(Kconv::UTF8, Kconv::EUC)
@@ -62,11 +64,11 @@ def getDay(department, year)
     table.xpath('tr').each_with_index do |tr, j|
       next if tr.xpath('td').length == 7
       lectures, exam = getTr(tr.xpath('td'))
-      
+
       date = "2017/%d/%d" % [(i + 4)%12, j]
       puts "class => #{lectures[:classes]}"
       obj = {
-        'grade' => year + 1,
+        'grade' => grade,
         'department' => department,
         'date' => date,
         'isHoliday' => lectures[:isholiday].to_s,
@@ -76,7 +78,7 @@ def getDay(department, year)
       Day.create(obj)
       next if lectures[:classes].nil? or lectures[:classes][:exam].length == 0
       obj = {
-        'grade' => year + 1,
+        'grade' => grade,
         'department' => department,
         'date' => date,
         'timetable' => (lectures[:classes][:exam].to_s || "")
