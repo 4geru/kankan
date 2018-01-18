@@ -11,7 +11,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20170412082858) do
+ActiveRecord::Schema.define(version: 20180118092221) do
 
   create_table "counts", force: :cascade do |t|
     t.integer  "number"
@@ -42,6 +42,17 @@ ActiveRecord::Schema.define(version: 20170412082858) do
     t.string   "channel_id"
     t.string   "department"
     t.integer  "grade"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+  end
+
+  create_table "trips", force: :cascade do |t|
+    t.string   "start_time"
+    t.string   "goal_time"
+    t.string   "goal"
+    t.string   "start"
+    t.string   "trip"
+    t.string   "status"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
