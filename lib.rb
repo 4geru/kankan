@@ -31,7 +31,7 @@ def levenshteinWord(title, lectures)
 end
 
 def weekName(num)
-  weeks = ['日', '月', '火', '水', '木', '金', '土']
+  weeks = ['月', '火', '水', '木', '金', '土', '日']
   weeks[num]
 end
 
