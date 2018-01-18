@@ -15,3 +15,4 @@ Dotenv.load
 
 require './src/web'
 require './src/line'
+require './src/bus'
