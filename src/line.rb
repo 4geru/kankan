@@ -24,24 +24,12 @@ post '/callback' do
       when Line::Bot::Event::MessageType::Text
         msg = nil
 
-        channel_id = event["source"]["userId"]
-        room = Room.where(channel_id: channel_id)[0]
+        room = Room.where(channel_id: event["source"]["userId"])[0]
         if room.nil?
           get_id(event["source"])
           room  = Room.where(channel_id: channel_id)[0]
         end
-        if event.message['text'] == "foo1"
-          if Exam.last.updated_at.yday == Time.now.yday
-            m = MessageConfirm.new('時間割アップデート確認')
-            m.pushButton('はい',   {"data": "type=update&status=true",  "text": "アップデートして！"})
-            m.pushButton('いいえ', {"data": "type=update&status=false"})
-            client.reply_message(event['replyToken'], m.reply("時間割アップデート確認\n本当にアップデートしますか？2,3分かかります"))
-          else
-            client.reply_message(event['replyToken'], { type: 'text', text: 'アップデートできないです' })
-          end
-        elsif event.message['text'] == "アップデートして！"
-          client.reply_message(event['replyToken'], { type: 'text', text: 'アップデートを開始します' })
-        end
+
         if not room
           m = MessageButton.new('学科選択中')
           m.pushButton('医学科',   {"data": "type=dept&department=igaku"})
@@ -57,6 +45,18 @@ post '/callback' do
           else
             msg = getEndTime(dept, grade, t.month, t.day)
           end
+        # update
+        elsif event.message['text'] =~ /アップデート/
+          if Exam.last.updated_at.yday != Time.now.yday
+            m = MessageConfirm.new('時間割アップデート確認')
+            m.pushButton('はい',   {"data": "type=update&status=true",  "text": "アップデートして！"})
+            m.pushButton('いいえ', {"data": "type=update&status=false"})
+            client.reply_message(event['replyToken'], m.reply("時間割アップデート確認\n本当にアップデートしますか？"))
+          else
+            client.reply_message(event['replyToken'], { type: 'text', text: 'アップデートできないです' })
+          end
+        elsif event.message['text'] == "アップデートして！"
+          client.reply_message(event['replyToken'], { type: 'text', text: 'アップデートを開始します' })
         elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/)
           t = getDate(event.message['text'])
           if t.nil?

@@ -49,10 +49,10 @@ def Actionpostback(event)
     }
     client.reply_message(event['replyToken'], message)
   when 'update'
-    puts data['status']
+    room = Room.where(channel_id: event["source"]["userId"])[0]
     case data['status']
     when 'true'
-      reset(room['department'], room['year'])
+      reset(room['department'], room['grade'])
       client.reply_message(event['replyToken'], { type: 'text', text: 'アップデートが完了しました' })
       puts 'done'
     when 'false'
