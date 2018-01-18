@@ -45,15 +45,13 @@ post '/callback' do
           else
             msg = getEndTime(dept, grade, t.month, t.day)
           end
-        elsif event.message['text'] =~ /授業/
+        elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/)
           t = getDate(event.message['text'])
           if t.nil?
             msg = '日付が見つかりませんでした。'
           else
             msg = op(dept, grade, t.month, t.day)
           end
-        elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/)
-          msg = getWeekName(dept, grade, event.message['text'])
         elsif (event.message['text'] =~ /試験/ or event.message['text'] =~ /テスト/) and event.message['text'] =~ /(\d{1,2})\/(\d{1,2})/
           begin
             m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)

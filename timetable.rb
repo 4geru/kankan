@@ -22,30 +22,6 @@ def op(department, grade, month = 4, day = 1)
   msg
 end
 
-def getWeekName(department, grade, params)
-  weeks = [['日','にちよう'], ['月','げつよう'], ['火', 'かよう'], ['水', 'すいよう'], ['木', 'もくよう'], ['金', 'きんよう'], ['土', 'どよう']]
-  t = Time.new
-  p weeks[t.wday]
-  day = -1
-  weeks.each_with_index do |week, i|
-    week.each do |word|
-      if params.match(word)
-        p 'true',word
-        day = i
-      end
-    end
-  end
-  return nil if day == -1
-  t += (60 * 60 * 24)
-  7.times do |i|
-    break if t.wday == day
-    t += (60 * 60 * 24)
-  end
-
-  msg = op(department, grade, t.month, t.day)
-  msg
-end
-
 def getEndTime(department, grade, month = 4, day = 1)
   t = Time.new('2017', month, day)
   month = month.to_i
@@ -57,28 +33,4 @@ def getEndTime(department, grade, month = 4, day = 1)
   p last_lecture
   time = {1 => ["8:50", "10:20"], 2 => ["10:30", "12:00"], 3 => ["13:00", "14:30"], 4 => ["14:40", "16:10"], 5 => ["16:20", "17:50"]}
   "#{month}/#{day}(#{weekName(t.wday)})の終了時間だね！\n#{last_period}限の#{last_lecture["title"]}までで\n\u{23F0}#{time[last_period][1]}までだよ！"
-end
-
-def getEndWeekName(department, grade, params)
-  weeks = [['日','にちよう'], ['月','げつよう'], ['火', 'かよう'], ['水', 'すいよう'], ['木', 'もくよう'], ['金', 'きんよう'], ['土', 'どよう']]
-  t = Time.new
-  p weeks[t.wday]
-  day = -1
-  weeks.each_with_index do |week, i|
-    week.each do |word|
-      if params.match(word)
-        p 'true',word
-        day = i
-      end
-    end
-  end
-  return nil if day == -1
-  t += (60 * 60 * 24)
-  7.times do |i|
-    break if t.wday == day
-    t += (60 * 60 * 24)
-  end
-
-  msg = getEndTime(department, grade, t.month, t.day)
-  msg
 end
