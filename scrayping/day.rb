@@ -41,7 +41,7 @@ def getHP(td)
     td[2..12].each do |t|
       isholiday = false if t.inner_text.gsub(/[\t\r\n]/, '') != ''
     end
-    return {isholiday: true, title: "\u{1F4A4} お休み"} if isholiday 
+    return {isholiday: true, title: "\u{1F4A4} お休み"} if isholiday
     return {isholiday: false, classes: timetable(td)}
   end
 end
@@ -49,6 +49,7 @@ end
 def day()
   # [['igaku', 6], ['kango', 4]].each do |i|
   [['igaku', 1]].each do |i|
+  # [].each do |i|
     department = i[0]
     year = i[1]
     year.times do |y|
@@ -62,12 +63,12 @@ def day()
         table.xpath('tr').each_with_index do |tr, j|
           next if tr.xpath('td').length == 7
           lectures = getHP(tr.xpath('td'))
-          
+
           #d = Day.where({date: "2017/%d/%d" % [(i + 4)%12, j]})[0]
           date = "2017/%d/%d" % [(i + 4)%12, j]
-          obj = { 
-            'grade' => y + 1, 
-            'department' => department, 
+          obj = {
+            'grade' => y + 1,
+            'department' => department,
             'date' => date,
             'isHoliday' => lectures[:isholiday].to_s,
             'timetable' => (lectures[:classes].to_s || ""),

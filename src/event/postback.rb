@@ -1,4 +1,4 @@
-def Actionpostback(egent)
+def Actionpostback(event)
   data = Hash[URI::decode_www_form(event["postback"]["data"])]
   case data["type"]
   when 'dept'
@@ -48,5 +48,15 @@ def Actionpostback(egent)
       text: word
     }
     client.reply_message(event['replyToken'], message)
+  when 'update'
+    puts data['status']
+    case data['status']
+    when 'true'
+      reset()
+      client.reply_message(event['replyToken'], { type: 'text', text: 'アップデートが完了しました' })
+      puts 'done'
+    when 'false'
+      client.reply_message(event['replyToken'], { type: 'text', text: 'アップデートはキャンセルしたよ' })
+    end
   end
 end

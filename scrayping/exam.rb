@@ -25,7 +25,7 @@ def examTimetable(doc, month = 0, day = 11)
       end
     end
   end
-  lectures.each_with_index do |lecture, i| 
+  lectures.each_with_index do |lecture, i|
     if i != lectures.length - 1 and lectures[i]["title"] == lectures[i+1]["title"]
       lecture["period"] = lecture["period"].to_s + "-" + lectures[i+1]["period"].to_s
       lectures.delete(lecture[i+1])
@@ -44,7 +44,7 @@ def examGetHP(td)
     td[2..12].each do |t|
       isholiday = false if t.inner_text.gsub(/[\t\r\n]/, '') != ''
     end
-    return nil if isholiday 
+    return nil if isholiday
     timetable = examTimetable(td)
     return nil if timetable.length == 0
 
@@ -55,6 +55,7 @@ end
 def exam()
   # [['igaku', 6], ['kango', 4]].each do |i|
   [['igaku', 1]].each do |i|
+  # [].each do |i|
     department = i[0]
     year = i[1]
     year.times do |y|
@@ -73,9 +74,9 @@ def exam()
           next if lectures == nil
           date = "2017/%d/%d" % [(i + 4)%12, j]
           # p date
-          obj = { 
-            'grade' => y + 1, 
-            'department' => department, 
+          obj = {
+            'grade' => y + 1,
+            'department' => department,
             'date' => date,
             'timetable' => (lectures[:classes].to_s || ""),
           }
