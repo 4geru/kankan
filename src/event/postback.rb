@@ -52,7 +52,7 @@ def Actionpostback(event)
     puts data['status']
     case data['status']
     when 'true'
-      reset()
+      reset(room['department'], room['year'])
       client.reply_message(event['replyToken'], { type: 'text', text: 'アップデートが完了しました' })
       puts 'done'
     when 'false'

@@ -25,7 +25,7 @@ post '/callback' do
         msg = nil
 
         channel_id = event["source"]["userId"]
-        room  = Room.where(channel_id: channel_id)[0]
+        room = Room.where(channel_id: channel_id)[0]
         if room.nil?
           get_id(event["source"])
           room  = Room.where(channel_id: channel_id)[0]

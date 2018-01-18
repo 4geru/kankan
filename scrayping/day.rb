@@ -2,9 +2,10 @@ require 'nokogiri'
 require 'open-uri'
 require 'kconv'
 
-def timetable(doc, month = 0, day = 11)
+def getTd(doc)
   tr = doc[2..12]
   lectures = []
+  exam = []
   0.step(8, 2) do |i|
     info   = tr[i].inner_text.gsub(/\t/,'').split(/\r\n/)
     room   = tr[i+1].inner_text.gsub(/\\t/,'')
@@ -20,12 +21,16 @@ def timetable(doc, month = 0, day = 11)
       lecture = Hash[*ary.flatten]
       lecture['room'] = room
       lectures.push(lecture)
+      if lecture['subtitle'] =~ /テスト/ or lecture['subtitle'] =~ /試験/
+        exam.push(lecture)
+      end
+
     end
   end
-  lectures
+  {lectures: lectures, exam: exam}
 end
 
-def getHP(td)
+def getTr(td)
   if td.length == 3
     # 休みの日
     title = ''
@@ -42,44 +47,42 @@ def getHP(td)
       isholiday = false if t.inner_text.gsub(/[\t\r\n]/, '') != ''
     end
     return {isholiday: true, title: "\u{1F4A4} お休み"} if isholiday
-    return {isholiday: false, classes: timetable(td)}
+    return {isholiday: false, classes: getTd(td)}
   end
 end
 
-def day()
-  # [['igaku', 6], ['kango', 4]].each do |i|
-  [['igaku', 1]].each do |i|
-  # [].each do |i|
-    department = i[0]
-    year = i[1]
-    year.times do |y|
-      url = 'http://www.shiga-med.ac.jp/~hqgaku/SchoolCalendar/' + department + '/' + (y + 1).to_s + '/calendar_d.html'
-      print url
-      html_txt = open(url).read
-      html_txt_utf8 = html_txt.kconv(Kconv::UTF8, Kconv::EUC)
-      doc = Nokogiri(html_txt_utf8,'nil','UTF-8')
+def getDay(department, year)
+  url = 'http://www.shiga-med.ac.jp/~hqgaku/SchoolCalendar/' + department + '/' + (year + 1).to_s + '/calendar_d.html'
+  print url
+  html_txt = open(url).read
+  html_txt_utf8 = html_txt.kconv(Kconv::UTF8, Kconv::EUC)
+  doc = Nokogiri(html_txt_utf8,'nil','UTF-8')
 
-      doc.xpath('//table[@class="table_layout"]').each_with_index do |table, i|
-        table.xpath('tr').each_with_index do |tr, j|
-          next if tr.xpath('td').length == 7
-          lectures = getHP(tr.xpath('td'))
-
-          #d = Day.where({date: "2017/%d/%d" % [(i + 4)%12, j]})[0]
-          date = "2017/%d/%d" % [(i + 4)%12, j]
-          obj = {
-            'grade' => y + 1,
-            'department' => department,
-            'date' => date,
-            'isHoliday' => lectures[:isholiday].to_s,
-            'timetable' => (lectures[:classes].to_s || ""),
-            'reason' => (lectures[:title] || ""),
-          }
-
-          Day.create(obj)
-        end
-      end
-      sleep 3
+  doc.xpath('//table[@class="table_layout"]').each_with_index do |table, i|
+    table.xpath('tr').each_with_index do |tr, j|
+      next if tr.xpath('td').length == 7
+      lectures, exam = getTr(tr.xpath('td'))
+      
+      date = "2017/%d/%d" % [(i + 4)%12, j]
+      puts "class => #{lectures[:classes]}"
+      obj = {
+        'grade' => year + 1,
+        'department' => department,
+        'date' => date,
+        'isHoliday' => lectures[:isholiday].to_s,
+        'timetable' => (lectures[:classes].nil? ? "" :lectures[:classes][:lectures].to_s),
+        'reason' => (lectures[:title] || ""),
+      }
+      Day.create(obj)
+      next if lectures[:classes].nil? or lectures[:classes][:exam].length == 0
+      obj = {
+        'grade' => year + 1,
+        'department' => department,
+        'date' => date,
+        'timetable' => (lectures[:classes][:exam].to_s || "")
+      }
+      Exam.create(obj)
     end
   end
-  'ok'
+  sleep 3
 end
