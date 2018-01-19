@@ -1,7 +1,8 @@
 def busStartAt(start)
-  t = Time.parse('2018/1/6 00:00')
-  puts t.sunday?
+  t = Time.now
   trips = Trip.where({start: start}).select{|trip|
+
+    puts "#{t}, #{trip.startAt}"
     trip.startAt > t and
     (
       (t.sunday? and trip.status == '日祝') or # 0

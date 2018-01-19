@@ -17,7 +17,7 @@ end
 
 class Trip < ActiveRecord::Base
   def startAt
-    Time.parse("2018/1/6 " + self.start_time)
+    Time.parse(self.start_time)
   end
 
   def goalAt
