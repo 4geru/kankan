@@ -45,7 +45,7 @@ def getDate(message)
     t = Time.new(t.year, t.month, t.day + 2)
   elsif message =~ /(\d{1,2})\/(\d{1,2})/
     begin
-      m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)
+      m = message.match(/(\d{1,2})\/(\d{1,2})/)
       t = Time.parse("#{t.year}/#{m[1]}/#{m[2]}")
     rescue => e
       puts '日付の入力を直してください 月/日'

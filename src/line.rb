@@ -73,8 +73,7 @@ post '/callback' do
           end
         elsif (event.message['text'] =~ /試験/ or event.message['text'] =~ /テスト/) and event.message['text'] =~ /(\d{1,2})\/(\d{1,2})/
           begin
-            m = event.message['text'].match(/(\d{1,2})\/(\d{1,2})/)
-            t = Time.parse("#{t.year}/#{m[1]}/#{m[2]}")
+            t = getDate(event.message['text'])
             msg = getExams(dept, grade, t.month, t.day)
           rescue => e
             msg = '日付の入力を直してください 月/日'
