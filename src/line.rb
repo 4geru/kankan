@@ -1,5 +1,6 @@
 require './src/event/postback'
 require './src/start'
+require './methods'
 def client
   @client ||= Line::Bot::Client.new { |config|
 
@@ -62,7 +63,7 @@ post '/callback' do
           else
             client.reply_message(event['replyToken'], { type: 'text', text: 'アップデートできないです' })
           end
-        elsif event.message['text'] == "アップデートして！"
+        elsif event.message['text'] == "アップデートして"
           client.reply_message(event['replyToken'], { type: 'text', text: 'アップデートを開始します' })
         elsif (event.message['text'] =~ /授業/ or event.message['text'] =~ /時間/)
           t = getDate(event.message['text'])
@@ -91,21 +92,11 @@ post '/callback' do
           m.pushButton('看護学科', {"data": "type=dept&department=kango"})
           client.reply_message(event['replyToken'], m.reply('学科選択', '設定を変更する？学科を教えてね！'))
         elsif event.message['text'] =~ /カンカン/ and (event.message['text'] =~ /ヘルプ/ or event.message['text'] =~ /help/)
-          content = [
-            "\u{1F4AC}[今日,曜日,日付(月/日)]の授業は？",
-            "　\u{2705} 時間割を教えるよ！",
-            "\u{1F4AC}[科目(略称可)]のテストは？",
-            "　\u{2705} 試験を教えるよ！",
-            "\u{1F4AC}[日付(月/日)]のテストは？",
-            "　\u{2705} 2週間以内の試験を教えるよ！",
-            "\u{1F4AC}[今日,曜日,日付(月/日)]何時まで？",
-            "　\u{2705} 終わりの時間を教えてくれるよ！",
-            "\u{1F4AC}カンカン設定！",
-            "　\u{2705} 学科,学年を変更できるよ！",
-            "\u{1F4AC}カンカンヘルプ！",
-            "　\u{2705} 指示の一覧が見れるよ！"]
-          msg = content.join("\n")
+          help(event['replyToken'])
+        elsif event.message['text'] =~ /コマンド/
+          msg = commands
         end
+        p msg
         if not msg.nil?
           message = {
             type: 'text',

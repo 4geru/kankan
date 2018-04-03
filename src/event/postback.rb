@@ -1,5 +1,6 @@
 def Actionpostback(event)
   data = Hash[URI::decode_www_form(event["postback"]["data"])]
+  p data
   case data["type"]
   when 'dept'
     case data["department"]
@@ -63,6 +64,33 @@ def Actionpostback(event)
       client.reply_message(event['replyToken'], { type: 'text', text: busStartAt('瀬田駅') })
     else
       client.reply_message(event['replyToken'], { type: 'text', text: busStartAt('医大西門') })
+    end
+  when 'help'
+    p 'post back'
+    p data
+    case data['order']
+    when 'help'
+      p "reply from word"
+    when 'upgrade'
+      m = MessageButton.new('学科選択中')
+      m.pushButton('医学科',   {"data": "type=dept&department=igaku"})
+      m.pushButton('看護学科', {"data": "type=dept&department=kango"})
+      client.reply_message(event['replyToken'], m.reply('学科選択', '情報を登録してね！'))
+    when 'update'
+      p "reply from word"
+    when 'calendar'
+
+      p event["postback"]["params"]
+
+
+      room = Room.where(channel_id: event["source"]["userId"])[0]
+      dept  = room["department"]
+      grade = room["grade"]
+      day = event["postback"]["params"]["date"].split('-')
+      client.reply_message(event['replyToken'], {
+        type: 'text',
+        text: op(dept, grade, day[1], day[2])
+      })
     end
   end
 end
