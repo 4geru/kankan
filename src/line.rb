@@ -95,9 +95,6 @@ post '/callback' do
           help(event['replyToken'])
         elsif event.message['text'] =~ /コマンド/
           msg = commands
-        elsif event.message['text'] =~ /日付を教える！/
-          msg = "iOS版LINE 7.9.0およびAndroid版LINE 7.12.0以降で利用が可能できるよ！\n
-          メッセージがこない場合は、LINEのバージョンを確認してね！"
         end
         p msg
         if not msg.nil?
