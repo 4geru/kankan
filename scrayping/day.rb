@@ -59,13 +59,13 @@ def getDay(department, grade)
   html_txt = open(url).read
   html_txt_utf8 = html_txt.kconv(Kconv::UTF8, Kconv::EUC)
   doc = Nokogiri(html_txt_utf8,'nil','UTF-8')
-
+  t = Time.now
   doc.xpath('//table[@class="table_layout"]').each_with_index do |table, i|
     table.xpath('tr').each_with_index do |tr, j|
       next if tr.xpath('td').length == 7
       lectures, exam = getTr(tr.xpath('td'))
 
-      date = "2017/%d/%d" % [(i + 4)%12, j]
+      date = "%d/%d/%d" % [t.year,(i + 4)%12, j]
       puts "class => #{lectures[:classes]}"
       obj = {
         'grade' => grade,

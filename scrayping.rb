@@ -1,7 +1,7 @@
 require './scrayping/day'
 
-def reset(department, year)
-  Exam.where(department: department, grade: year).map{|exam| exam.delete}
-  Day.where(department: department, grade: year).map{|day| day.delete}
-  getDay(department, year)
+def reset(department, grade)
+  Exam.where(department: department, grade: grade).map{|exam| exam.delete}
+  Day.where(department: department, grade: grade).map{|day| day.delete}
+  getDay(department, grade)
 end
