@@ -1,6 +1,3 @@
-require './messagebutton'
-require './messagecarousel'
-
 def commands
   content = [
     "\u{1F4AC}[今日,曜日,日付(月/日)]の授業は？",
