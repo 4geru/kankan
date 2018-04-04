@@ -33,16 +33,16 @@ post '/callback' do
         room  = Room.find_by(channel_id: event["source"]["userId"])
         selectCollege(event) if not room
 
-        if event.message['text'] =~ /foo0/
-          textEndTime(event)
-        elsif event.message['text'] =~ /foo1/
+        if event.message['text'] =~ /時間割教えて？/
           textTimeTable(event)
-        elsif event.message['text'] =~ /foo2/
-          textBus(event)
-        elsif event.message['text'] =~ /foo3/
+        elsif event.message['text'] =~ /テスト教えて？/
           textExam(event)
-        elsif event.message['text'] =~ /foo4/
+        elsif event.message['text'] =~ /カンカン教えて？/
           help(event['replyToken'])
+        elsif event.message['text'] =~ /何時まで？/
+          textEndTime(event)
+        elsif event.message['text'] =~ /バスの時間は？/
+          textBus(event)
         end
       end
     when Line::Bot::Event::Join
