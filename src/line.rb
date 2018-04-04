@@ -1,5 +1,5 @@
 require './src/event/postback'
-require './methods'
+require './src/reply/help'
 require './src/reply/igaku_grade'
 require './src/reply/kango_grade'
 require './src/reply/select_college'
@@ -46,9 +46,9 @@ post '/callback' do
         end
       end
     when Line::Bot::Event::Join
-      client.reply_message(event['replyToken'], startAction)
+      client.reply_message(event['replyToken'], select_college(event))
     when Line::Bot::Event::Follow
-      client.reply_message(event['replyToken'], startAction)
+      client.reply_message(event['replyToken'], select_college(event))
     when Line::Bot::Event::Postback
       Actionpostback(event)
     end
