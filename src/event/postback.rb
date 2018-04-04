@@ -26,6 +26,25 @@ def Actionpostback(event)
       m.pushButton('4年', {"data": "type=grade&department=kango&grade=4"})
       client.reply_message(event['replyToken'], m.reply('看護学科 > 学年選択', '学年を教えてね！'))
     end
+  when 'timetable'
+    case data["order"]
+    when "today"
+      room = Room.where(channel_id: event["source"]["userId"])[0]
+      dept  = room["department"]
+      grade = room["grade"]
+      t = Time.new()
+      msg = op(dept, grade, t.month, t.day)
+      client.reply_message(event['replyToken'],{ type: 'text', text: msg })
+    when "calendar"
+      room = Room.where(channel_id: event["source"]["userId"])[0]
+      dept  = room["department"]
+      grade = room["grade"]
+      day = event["postback"]["params"]["date"].split('-')
+      client.reply_message(event['replyToken'], {
+        type: 'text',
+        text: op(dept, grade, day[1], day[2])
+      })
+    end
   when 'grade'
     channel_id = event["source"]["userId"]
     room = Room.where(channel_id: channel_id)[0]
@@ -79,10 +98,6 @@ def Actionpostback(event)
     when 'update'
       p "reply from word"
     when 'calendar'
-
-      p event["postback"]["params"]
-
-
       room = Room.where(channel_id: event["source"]["userId"])[0]
       dept  = room["department"]
       grade = room["grade"]

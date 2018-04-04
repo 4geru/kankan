@@ -48,6 +48,22 @@ post '/callback' do
             msg = getEndTime(dept, grade, t.month, t.day)
           end
         # bus
+        elsif event.message['text'] =~ /hoge/
+          m  = MessageCarousel.new('学年選択中')
+            m1 = MessageButton.new('hoge')
+            m1.pushButton('今日の授業', {"data": "type=timetable&order=today"})
+            m1.pushButton('日付を選択',
+            { "type": "datetimepicker", "data": "type=timetable&order=calendar", "text": "日付を教える！",
+              "mode": "date"
+            })
+            reply = m.reply([
+              m1.getButtons('カンカン設定', '設定を調べてね！'),
+            ])
+            p reply
+            client.reply_message(event['replyToken'], [
+              { type: 'text', text: "まだまだ成長できるから、どんどん要望を送ってね！"},
+              reply
+            ])
         elsif event.message['text'] =~ /バス/
             m = MessageConfirm.new('バス出発地点洗濯中')
             m.pushButton('瀬田駅',   {"data": "type=bus&pin=seta"})
