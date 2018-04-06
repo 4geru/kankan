@@ -1,3 +1,7 @@
+require './src/lib/sticky'
+require './src/lib/getTimeTable'
+require './src/lib/getEndTime'
+require './src/lib/getExam'
 require './src/event/postback'
 require './src/reply/help'
 require './src/reply/igaku_grade'

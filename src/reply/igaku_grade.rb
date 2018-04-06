@@ -8,8 +8,8 @@ def igaku_grade(event)
   m2.pushButton('4年', {"data": "type=grade&department=igaku&grade=4"})
   m2.pushButton('5年', {"data": "type=grade&department=igaku&grade=5"})
   m2.pushButton('6年', {"data": "type=grade&department=igaku&grade=6"})
-  client.reply_message(event['replyToken'], m.reply([
+  client.reply_message(event['replyToken'], [ sticky, m.reply([
     m1.getButtons('医学科 > 学年選択 > 低学年', '学年を教えてね！'),
     m2.getButtons('医学科 > 学年選択 > 高学年', '学年を教えてね！')
-  ]))
+  ])])
 end

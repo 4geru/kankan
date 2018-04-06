@@ -11,6 +11,7 @@ def help(token)
     m2.getButtons('カンカン設定', '設定を帰るかな？！')
   ])
   client.reply_message(token, [
+    sticky,
     { type: 'text', text: "まだまだ成長できるから、どんどん要望を送ってね！"},
     reply
   ])
