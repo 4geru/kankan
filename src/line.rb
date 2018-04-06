@@ -47,6 +47,8 @@ post '/callback' do
           textEndTime(event)
         elsif event.message['text'] =~ /バスの時間は？/
           textBus(event)
+        elsif  event.message['text'] =~ /時間割をアップデートして/
+          textUpdate(event)
         end
       end
     when Line::Bot::Event::Join

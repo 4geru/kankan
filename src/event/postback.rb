@@ -31,9 +31,9 @@ def Actionpostback(event)
   when 'update'
     if data['status'] == 'true'
       reset(room['department'], room['grade'])
-      client.reply_message(event['replyToken'], { type: 'text', text: 'アップデートが完了しました' })
+      client.reply_message(event['replyToken'], [ sticky, { type: 'text', text: 'アップデートが完了しました' } ])
     else
-      client.reply_message(event['replyToken'], { type: 'text', text: 'アップデートはキャンセルしたよ' })
+      client.reply_message(event['replyToken'], [ sticky, { type: 'text', text: 'アップデートはキャンセルしたよ' } ])
     end
   when 'bus'
     if data['pin'] == 'seta'
