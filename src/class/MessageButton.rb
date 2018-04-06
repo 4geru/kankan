@@ -32,7 +32,6 @@ class MessageButton
   end
   # option : {data=nil, url=nil}
   def pushButton(label='', option)
-    @buttons.push(option.merge({"type": "postback", "label": label}))
+    @buttons.push({"type": "postback", "label": label}.merge(option))
   end
-
 end
