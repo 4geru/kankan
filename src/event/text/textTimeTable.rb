@@ -1,8 +1,8 @@
 def textTimeTable(event)
   m  = MessageCarousel.new('授業日を選択中')
   m1 = MessageButton.new('hoge')
-  m1.pushButton('今日の授業', {"data": "type=timetable&order=today"})
-  m1.pushButton('日付を選択', {
+  m1.pushButton("\u{1F4CD} 今日の授業", {"data": "type=timetable&order=today"})
+  m1.pushButton("\u{1F4C5} 日付を選択", {
     "type": "datetimepicker",
     "data":"type=timetable&order=calendar",
     "text": "調べたい日を伝える！",

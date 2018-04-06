@@ -11,6 +11,6 @@ def postbackTimeTable(event, data)
     y, m, d = event["postback"]["params"]["date"].split('-')
     t = Time.new(y, m, d)
     msg = getTimeTable(dept, grade, t)
-    client.reply_message(event['replyToken'], { type: 'text', text: msg })
+    client.reply_message(event['replyToken'], [ sticky, { type: 'text', text: msg }])
   end
 end

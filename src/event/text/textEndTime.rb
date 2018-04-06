@@ -1,8 +1,8 @@
 def textEndTime(event)
   m  = MessageCarousel.new('終了時間選択中')
   m1 = MessageButton.new('hoge')
-  m1.pushButton('今日の授業', {"data": "type=endTime&order=today"})
-  m1.pushButton('日付を選択', {
+  m1.pushButton("\u{1F4CD} 今日の授業", {"data": "type=endTime&order=today"})
+  m1.pushButton("\u{1F4C5} 日付を選択", {
     "type": "datetimepicker",
     "data": "type=endTime&order=calendar",
     "text": "調べたい日を伝える！",
