@@ -1,4 +1,4 @@
-def textUpdate(event)
+def text_update(event)
    if Exam.last.updated_at.yday != Time.now.yday
     m = MessageConfirm.new('時間割アップデート確認')
     m.pushButton('はい',   {"data": "type=update&status=true",  "text": "アップデートして！"})

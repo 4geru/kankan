@@ -1,4 +1,4 @@
-def textEndTime(event)
+def text_endtime(event)
   m  = MessageCarousel.new('終了時間選択中')
   m1 = MessageButton.new('hoge')
   m1.pushButton("\u{1F4CD} 今日の授業", {"data": "type=endTime&order=today"})

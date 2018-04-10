@@ -1,4 +1,4 @@
-def getEndTime(department, grade, t)
+def get_endtime(department, grade, t)
   month = t.month
   day = t.day
   date = t.year.to_s + '/' + (month == 12 ? "0" : month.to_s) + '/' + day.to_s

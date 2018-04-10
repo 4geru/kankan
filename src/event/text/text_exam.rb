@@ -1,4 +1,4 @@
-def textExam(event)
+def text_exam(event)
   m  = MessageCarousel.new('テスト期間を選択中')
   m1 = MessageButton.new('hoge')
   m1.pushButton("\u{1F4CD} 今日の授業", {"data": "type=exam&order=today"})

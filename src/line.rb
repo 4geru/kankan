@@ -1,18 +1,19 @@
 require './src/lib/sticky'
-require './src/lib/getTimeTable'
-require './src/lib/getEndTime'
-require './src/lib/getExam'
+require './src/bus_strt_at'
+require './src/lib/get_timetable'
+require './src/lib/get_endtime'
+require './src/lib/get_exam'
 require './src/event/postback'
 require './src/reply/help'
 require './src/reply/igaku_grade'
 require './src/reply/kango_grade'
 require './src/reply/select_college'
-require './src/event/text/textBus'
-require './src/event/text/textEndTime'
-require './src/event/text/textTimeTable'
-require './src/event/text/textUpdate'
-require './src/event/text/textNewFunc'
-require './src/event/text/textExam'
+require './src/event/text/text_bus'
+require './src/event/text/text_endtime'
+require './src/event/text/text_timetable'
+require './src/event/text/text_update'
+require './src/event/text/text_new_func'
+require './src/event/text/text_exam'
 def client
   @client ||= Line::Bot::Client.new { |config|
 
@@ -38,19 +39,20 @@ post '/callback' do
         room  = Room.find_by(channel_id: event["source"]["userId"])
         selectCollege(event) if not room
         if event.message['text'] =~ /時間割教えて？/
-          textTimeTable(event)
+          text_timetable(event)
         elsif event.message['text'] =~ /テスト教えて？/
-          textExam(event)
+          text_exam(event)
         elsif event.message['text'] =~ /カンカン教えて？/
+          p 'rub help'
           help(event['replyToken'])
         elsif event.message['text'] =~ /何時まで？/
-          textEndTime(event)
+          text_endtime(event)
         elsif event.message['text'] =~ /バスの時間は？/
-          textBus(event)
+          text_bus(event)
         elsif event.message['text'] =~ /新機能は？/
-          textNewFunc(event)
+          text_new_func(event)
         elsif  event.message['text'] =~ /時間割をアップデートして/
-          textUpdate(event)
+          text_update(event)
         end
       end
     when Line::Bot::Event::Join
@@ -58,7 +60,7 @@ post '/callback' do
     when Line::Bot::Event::Follow
       client.reply_message(event['replyToken'], select_college(event))
     when Line::Bot::Event::Postback
-      Actionpostback(event)
+      postback(event)
     end
   end
 

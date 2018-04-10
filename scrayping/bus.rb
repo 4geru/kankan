@@ -76,5 +76,5 @@ def idaiToSeta
   }
 end
 
-setaToIdai
-idaiToSeta
+# setaToIdai
+# idaiToSeta
