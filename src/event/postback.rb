@@ -1,8 +1,8 @@
-require './src/event/postback/postbackTimeTable'
-require './src/event/postback/postbackEndTime'
-require './src/event/postback/postbackExam'
+require './src/event/postback/postback_timetable'
+require './src/event/postback/postback_endtime'
+require './src/event/postback/postback_exam'
 
-def Actionpostback(event)
+def postback(event)
   data = Hash[URI::decode_www_form(event["postback"]["data"])]
   p data
 
@@ -18,11 +18,11 @@ def Actionpostback(event)
       kango_grade(event)
     end
   when 'timetable'
-    postbackTimeTable(event, data)
+    postback_timetable(event, data)
   when 'endTime'
-    postbackEndTime(event, data)
+    postback_endtime(event, data)
   when 'exam'
-    postbackExam(event, data)
+    postback_exam(event, data)
   when 'grade'
     room.update!({ department: data["department"], grade: data["grade"] })
     dept = (room["department"] == 'igaku' ? '医学科' : '看護学科')
@@ -37,9 +37,9 @@ def Actionpostback(event)
     end
   when 'bus'
     if data['pin'] == 'seta'
-      client.reply_message(event['replyToken'], { type: 'text', text: busStartAt('瀬田駅') })
+      client.reply_message(event['replyToken'], { type: 'text', text: bus_start_at('瀬田駅') })
     else
-      client.reply_message(event['replyToken'], { type: 'text', text: busStartAt('医大西門') })
+      client.reply_message(event['replyToken'], { type: 'text', text: bus_start_at('医大西門') })
     end
   when 'help'
     case data['order']
@@ -49,7 +49,7 @@ def Actionpostback(event)
       select_college(event)
     when 'calendar'
       t = Time.new(event["postback"]["params"]["date"])
-      client.reply_message(event['replyToken'], { type: 'text', text: getTimeTable(dept, grade, t) })
+      client.reply_message(event['replyToken'], { type: 'text', text: get_timetable(dept, grade, t) })
     end
   end
 end

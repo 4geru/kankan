@@ -12,4 +12,7 @@ require 'dotenv'
 Dotenv.load
 
 require './src/line'
-require './src/bus'
+
+get '/' do
+  "Hello World"
+end

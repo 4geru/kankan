@@ -1,4 +1,4 @@
-def textNewFunc(event)
+def text_new_func(event)
   m = MessageButton.new('アンケート選択中')
   m.pushButton('する',   {"type": "uri", "uri": "https://goo.gl/forms/LX279L52DN1tNfHJ2"})
   m.pushButton('しない', {"data": "type=grade&department=kango&grade=1"})

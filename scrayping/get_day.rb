@@ -2,7 +2,7 @@ require 'nokogiri'
 require 'open-uri'
 require 'kconv'
 
-def getTd(doc)
+def get_td(doc)
   tr = doc[2..12]
   lectures = []
   exam = []
@@ -24,13 +24,12 @@ def getTd(doc)
       if lecture['subtitle'] =~ /テスト/ or lecture['subtitle'] =~ /試験/
         exam.push(lecture)
       end
-
     end
   end
   {lectures: lectures, exam: exam}
 end
 
-def getTr(td)
+def get_tr(td)
   if td.length == 3
     # 休みの日
     title = ''
@@ -47,11 +46,11 @@ def getTr(td)
       isholiday = false if t.inner_text.gsub(/[\t\r\n]/, '') != ''
     end
     return {isholiday: true, title: "\u{1F4A4} お休み"} if isholiday
-    return {isholiday: false, classes: getTd(td)}
+    return {isholiday: false, classes: gettd(td)}
   end
 end
 
-def getDay(department, grade)
+def get_day(department, grade)
   puts grade
   puts department
   url = "http://www.shiga-med.ac.jp/~hqgaku/SchoolCalendar/#{department}/#{grade}/calendar_d.html"
@@ -63,7 +62,7 @@ def getDay(department, grade)
   doc.xpath('//table[@class="table_layout"]').each_with_index do |table, i|
     table.xpath('tr').each_with_index do |tr, j|
       next if tr.xpath('td').length == 7
-      lectures, exam = getTr(tr.xpath('td'))
+      lectures, exam = get_tr(tr.xpath('td'))
 
       date = "%d/%d/%d" % [t.year,(i + 4)%12, j]
       puts "class => #{lectures[:classes]}"

@@ -1,5 +1,5 @@
 require './app'
-def getExam(department, grade, t)
+def get_exam(department, grade, t)
   dept = (department == 'igaku' ? '医学科' : '看護学科')
   exams = []
   # [TODO] 直す
