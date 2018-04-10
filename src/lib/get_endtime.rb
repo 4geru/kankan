@@ -2,7 +2,7 @@ def get_endtime(department, grade, t)
   month = t.month
   day = t.day
   date = t.year.to_s + '/' + (month == 12 ? "0" : month.to_s) + '/' + day.to_s
-  lectures = Day.where({department: department, grade: grade, date: date }).first
+  lectures = Day.find_by({department: department, grade: grade, date: date })
   timetable = eval(lectures['timetable'])
 
   dept = (department == 'igaku' ? '医学科' : '看護学科')
