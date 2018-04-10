@@ -11,6 +11,7 @@ require './src/event/text/textBus'
 require './src/event/text/textEndTime'
 require './src/event/text/textTimeTable'
 require './src/event/text/textUpdate'
+require './src/event/text/textNewFunc'
 require './src/event/text/textExam'
 def client
   @client ||= Line::Bot::Client.new { |config|
@@ -36,7 +37,6 @@ post '/callback' do
       when Line::Bot::Event::MessageType::Text
         room  = Room.find_by(channel_id: event["source"]["userId"])
         selectCollege(event) if not room
-
         if event.message['text'] =~ /時間割教えて？/
           textTimeTable(event)
         elsif event.message['text'] =~ /テスト教えて？/
@@ -47,6 +47,8 @@ post '/callback' do
           textEndTime(event)
         elsif event.message['text'] =~ /バスの時間は？/
           textBus(event)
+        elsif event.message['text'] =~ /新機能は？/
+          textNewFunc(event)
         elsif  event.message['text'] =~ /時間割をアップデートして/
           textUpdate(event)
         end
