@@ -11,5 +11,5 @@ def sticky
     { "type": "sticker", "packageId": "2", "stickerId": "171" },
     { "type": "sticker", "packageId": "2", "stickerId": "172" },
     { "type": "sticker", "packageId": "2", "stickerId": "179" },
-  ].shuffle.first
+  ].sample
 end
