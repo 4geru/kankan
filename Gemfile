@@ -13,11 +13,12 @@ gem 'levenshtein'
 gem "rspec", ">= 3.0.0"
 
 gem 'dotenv'
-group :development do
-gem 'sqlite3'
-  gem "simplecov"
-end
+# group :development do
+#   gem 'sqlite3'
+#   gem "simplecov"
+# end
 
-group :production do
-  gem 'pg'
-end
+# group :production do
+#   gem "pg", "~>1.8"
+# end
+gem 'pg'
