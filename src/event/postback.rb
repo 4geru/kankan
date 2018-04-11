@@ -7,8 +7,8 @@ def postback(event)
   p data
 
   room = Room.find_by(channel_id: event["source"]["userId"])
-  dept  = room["department"] if room
-  grade = room["grade"] if room
+  dept  = room["department"]
+  grade = room["grade"]
   case data["type"]
   when 'dept'
     case data["department"]
