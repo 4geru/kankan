@@ -37,14 +37,12 @@ post '/callback' do
     when Line::Bot::Event::Message
       case event.type
       when Line::Bot::Event::MessageType::Text
-        # room  = Room.find_by(channel_id: event["source"]["userId"])
         selectCollege(event) if not room
         if event.message['text'] =~ /時間割教えて？/
           text_timetable(event)
         elsif event.message['text'] =~ /テスト教えて？/
           text_exam(event)
         elsif event.message['text'] =~ /カンカン教えて？/
-          # p 'rub help'
           help(event['replyToken'])
         elsif event.message['text'] =~ /何時まで？/
           text_endtime(event)
