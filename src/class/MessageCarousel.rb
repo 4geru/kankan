@@ -4,13 +4,13 @@ class MessageCarousel
   end
 
   def reply(buttons)
-  {
-    "type": "template",
-    "altText": @altText,
-    "template": {
-      "type": "carousel",
-      "columns": buttons
+    {
+      "type": "template",
+      "altText": @altText,
+      "template": {
+        "type": "carousel",
+        "columns": buttons
+      }
     }
-  }
   end
 end
