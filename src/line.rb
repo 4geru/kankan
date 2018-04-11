@@ -1,5 +1,5 @@
 require './src/lib/sticky'
-require './src/bus_strt_at'
+require './src/lib/bus_start_at'
 require './src/lib/get_timetable'
 require './src/lib/get_endtime'
 require './src/lib/get_exam'
@@ -32,18 +32,17 @@ post '/callback' do
 
   events = client.parse_events_from(body)
   events.each do |event|
+    room  = Room.find_or_create_by(channel_id: event["source"]["userId"])
     case event
     when Line::Bot::Event::Message
       case event.type
       when Line::Bot::Event::MessageType::Text
-        room  = Room.find_by(channel_id: event["source"]["userId"])
         selectCollege(event) if not room
         if event.message['text'] =~ /時間割教えて？/
           text_timetable(event)
         elsif event.message['text'] =~ /テスト教えて？/
           text_exam(event)
         elsif event.message['text'] =~ /カンカン教えて？/
-          p 'rub help'
           help(event['replyToken'])
         elsif event.message['text'] =~ /何時まで？/
           text_endtime(event)
