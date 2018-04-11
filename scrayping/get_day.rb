@@ -24,6 +24,7 @@ def get_td(doc)
       if lecture['subtitle'] =~ /テスト/ or lecture['subtitle'] =~ /試験/
         exam.push(lecture)
       end
+
     end
   end
   {lectures: lectures, exam: exam}
@@ -46,7 +47,7 @@ def get_tr(td)
       isholiday = false if t.inner_text.gsub(/[\t\r\n]/, '') != ''
     end
     return {isholiday: true, title: "\u{1F4A4} お休み"} if isholiday
-    return {isholiday: false, classes: gettd(td)}
+    return {isholiday: false, classes: get_td(td)}
   end
 end
 
