@@ -19,6 +19,6 @@ gem 'dotenv'
 # end
 
 # group :production do
-#   gem "pg", "~>1.8"
+  gem "pg"
 # end
-gem 'pg'
+# gem 'pg'
