@@ -15,4 +15,3 @@ def get_timetable(department, grade, t)
   end
   return msg
 end
-

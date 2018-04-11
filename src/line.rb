@@ -14,6 +14,7 @@ require './src/event/text/text_timetable'
 require './src/event/text/text_update'
 require './src/event/text/text_new_func'
 require './src/event/text/text_exam'
+
 def client
   @client ||= Line::Bot::Client.new { |config|
 
