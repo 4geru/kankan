@@ -1,4 +1,8 @@
 require './scrayping'
+
+if not Trip.all.empty?
+  Trip.all.map{|trip| trip.delete }
+end
 Trip.create({:start_time=>"08:00", :goal_time=>"08:09", :goal=>"医大西門", :start=>"瀬田駅", :status=>"平日", :trip=>"滋賀医大（大学病院） ﾚｽﾄﾀｳﾝ長寿社会行"})
 Trip.create({:start_time=>"08:30", :goal_time=>"08:39", :goal=>"医大西門", :start=>"瀬田駅", :status=>"平日", :trip=>"滋賀医大（大学病院） ﾚｽﾄﾀｳﾝ長寿社会行"})
 Trip.create({:start_time=>"09:00", :goal_time=>"09:09", :goal=>"医大西門", :start=>"瀬田駅", :status=>"平日", :trip=>"滋賀医大（大学病院） ﾚｽﾄﾀｳﾝ長寿社会行"})
@@ -305,7 +309,6 @@ Trip.create({:start_time=>"20:18", :goal_time=>"20:30", :goal=>"瀬田駅", :sta
 Trip.create({:start_time=>"20:46", :goal_time=>"20:58", :goal=>"瀬田駅", :start=>"医大西門", :status=>"日祝", :trip=>"瀬田駅前 瀬田公園行"})
 Trip.create({:start_time=>"21:16", :goal_time=>"21:28", :goal=>"瀬田駅", :start=>"医大西門", :status=>"日祝", :trip=>"瀬田駅前 瀬田公園行"})
 Trip.create({:start_time=>"21:46", :goal_time=>"21:58", :goal=>"瀬田駅", :start=>"医大西門", :status=>"日祝", :trip=>"瀬田駅前 瀬田公園行"})
-
 
 def all_reset
   6.times do |i|

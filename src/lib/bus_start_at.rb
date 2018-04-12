@@ -1,4 +1,4 @@
-def busstart_at(start)
+def bus_start_at(start)
   t = Time.now
   trips = Trip.where({start: start}).select{|trip|
 
