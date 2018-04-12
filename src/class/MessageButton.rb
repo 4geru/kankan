@@ -5,31 +5,34 @@ class MessageButton
   end
 
   def reply(title = nil, text = nil)
-  return nil if @buttons.length == 0
-  return nil if title.nil?
-  return nil if text.nil?
-  {
-    "type": "template",
-    "altText": @altText || "this is a buttons template",
-    "template": {
-        "type": "buttons",
-        "title": title,
-        "text": text,
-        "actions": @buttons
+    return nil if @buttons.length == 0
+    return nil if title.nil?
+    return nil if text.nil?
+
+    {
+      "type": "template",
+      "altText": @altText || "this is a buttons template",
+      "template": {
+          "type": "buttons",
+          "title": title,
+          "text": text,
+          "actions": @buttons
+      }
     }
-  }
   end
 
   def getButtons(title = nil, text = nil)
     return nil if @buttons.length == 0
     return nil if title.nil?
     return nil if text.nil?
+
     {
       "title": title,
       "text": text,
       "actions": @buttons
     }
   end
+
   # option : {data=nil, url=nil}
   def pushButton(label='', option)
     @buttons.push({"type": "postback", "label": label}.merge(option))
