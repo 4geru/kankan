@@ -1,7 +1,5 @@
 def get_endtime(department, grade, t)
-  month = t.month
-  day = t.day
-  date = t.year.to_s + '/' + (month == 12 ? "0" : month.to_s) + '/' + day.to_s
+  date = "#{t.year}/#{t.month == 12 ? 0 : t.month.to_s}/#{t.day}"
   lectures = Day.find_by({department: department, grade: grade, date: date })
   timetable = eval(lectures['timetable'])
 
