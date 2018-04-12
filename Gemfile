@@ -17,6 +17,7 @@ gem 'dotenv'
 group :development do
   gem 'sqlite3'
   gem "simplecov"
+  gem "pry"
 end
 
 group :production do

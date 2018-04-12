@@ -1,5 +1,6 @@
 require 'bundler/setup'
 Bundler.require
+require 'pry' if development?
 require 'sinatra/reloader' if development?
 require './models.rb'
 require 'line/bot'
