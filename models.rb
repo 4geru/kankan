@@ -16,12 +16,11 @@ class Exam < ActiveRecord::Base
 end
 
 class Trip < ActiveRecord::Base
-  def startAt
-    Time.parse(self.start_time)
+  def startAt(t = Time.now)
+    Time.parse("#{t.strftime("%Y/%m/%d")} #{start_time}")
   end
 
-  def goalAt
-    Time.parse(self.goal_time)
+  def goalAt(t = Time.now)
+    Time.parse("#{t.strftime("%Y/%m/%d")} #{goal_time}")
   end
-
 end
