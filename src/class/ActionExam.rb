@@ -8,6 +8,10 @@ class ActionExam < Action
     @jp_type2 = "テスト期間"
   end
 
+  def get_detail(data)
+    client.reply_message(@token,{ type: 'text', text: get_message(data) })
+  end
+
   def get_grade_header
     dept  = (@room["department"] == 'igaku' ? '医学科' : '看護学科')
     grade = @room["grade"]
@@ -19,12 +23,6 @@ class ActionExam < Action
     t = Time.now
     t = Time.parse("#{t.year}/#{m[1]}/#{m[2]}")
     "#{t.month}月#{t.day}日 (#{weekName(t.wday)})\n"
-  end
-
-  def get_detail(t)
-    array = get_array(t)
-    return "#{get_header(t)}直近2週間にテストはありません" if array.flatten!.empty?
-    get_message(t, array)
   end
 
   def get_array(t)
@@ -40,7 +38,18 @@ class ActionExam < Action
     }
   end
 
-  def get_message(t, array)
+  def get_message(data)
+    t =  Time.new() #  data["order"] == 'today'
+    if data["order"] == "calendar"
+      y, m, d = @event["postback"]["params"]["date"].split('-')
+      t = Time.new(y, m, d)
+    end
+    array = get_array(t)
+    return "#{get_grade_header}直近2週間にテストはありません" if array.flatten!.empty?
+    get_message_exam(t, array)
+  end
+
+  def get_message_exam(t, array)
     get_grade_header + array.map{|exam|
       table = eval(exam['timetable']).map{|time|
         "#{time['period']}限目 #{time['title']} \u{1F6A9} #{time['room']}\n  \u{1F4D4}  #{time['subtitle']}\n  \u{1F468}  #{time['professor']}"

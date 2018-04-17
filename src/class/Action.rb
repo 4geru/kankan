@@ -22,7 +22,7 @@ class Action
   def text
     m  = MessageCarousel.new("#{@jp_type2}を選択中")
     m1 = MessageButton.new('hoge')
-    m1.pushButton("\u{1F4CD} 今日の授業", {"data": "type=#{@type}&order=today"})
+    m1.pushButton("\u{1F4CD} 今日の#{@jp_type1}", {"data": "type=#{@type}&order=today"})
     m1.pushButton("\u{1F4C5} 日付を選択", {
       "type": "datetimepicker",
       "data": "type=#{@type}&order=calendar",

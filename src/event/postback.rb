@@ -1,10 +1,8 @@
 require './src/event/postback/postback_timetable'
 require './src/event/postback/postback_endtime'
-require './src/event/postback/postback_exam'
 
 def postback(event)
   data = Hash[URI::decode_www_form(event["postback"]["data"])]
-  p data
 
   room = Room.find_by(channel_id: event["source"]["userId"])
   dept  = room["department"]
@@ -22,7 +20,7 @@ def postback(event)
   when 'endTime'
     postback_endtime(event, data)
   when 'exam'
-    postback_exam(event, data)
+    ActionExam.new(event).get_detail(data)
   when 'grade'
     room.update!({ department: data["department"], grade: data["grade"] })
     dept = (room["department"] == 'igaku' ? '医学科' : '看護学科')
