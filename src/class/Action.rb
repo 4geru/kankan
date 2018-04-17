@@ -9,16 +9,13 @@ class Action
     @jp_type2 = ""#"テスト期間"
   end
 
-  def postback(event, data)
-    dept  = @room["department"]
-    grade = @room["grade"]
-
+  def postback(data)
     t =  Time.new() #  data["order"] == 'today'
     if data["order"] == "calendar"
       y, m, d = @event["postback"]["params"]["date"].split('-')
       t = Time.new(y, m, d)
     end
-    msg = "" #カーリー化する get_timetable(dept, grade, t)
+    msg = get_detail(t)
     client.reply_message(@token,{ type: 'text', text: msg })
   end
 
@@ -34,5 +31,18 @@ class Action
     })
     reply = m.reply([ m1.getButtons("#{@jp_type1}検索", '探したい日付を教えてね！') ])
     client.reply_message(@token, [ sticky, reply ])
+  end
+
+  def get_header(t)
+    dept  = (@room["department"] == 'igaku' ? '医学科' : '看護学科')
+    grade = @room["grade"]
+    "#{t.month}月#{t.day}日 (#{weekName(t.wday)}) #{dept} #{grade}年生\n"
+  end
+
+  def get_detail(t)
+    dept  = @room["department"]
+    grade = @room["grade"]
+
+    get_header(t) + ""
   end
 end
