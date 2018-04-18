@@ -1,4 +1,3 @@
-require './src/event/postback/postback_timetable'
 require './src/event/postback/postback_endtime'
 
 def postback(event)
@@ -18,7 +17,7 @@ def postback(event)
   when 'timetable'
     ActionTimeTable.new(event).get_detail(data)
   when 'endTime'
-    postback_endtime(event, data)
+    ActionEndTime.new(event).get_detail(data)
   when 'exam'
     ActionExam.new(event).get_detail(data)
   when 'grade'

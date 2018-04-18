@@ -1,6 +1,5 @@
 require './src/lib/sticky'
 require './src/lib/bus_start_at'
-require './src/lib/get_timetable'
 require './src/lib/get_endtime'
 require './src/event/postback'
 require './src/reply/help'
@@ -9,11 +8,11 @@ require './src/reply/kango_grade'
 require './src/reply/select_college'
 require './src/event/text/text_bus'
 require './src/event/text/text_endtime'
-require './src/event/text/text_timetable'
 require './src/event/text/text_update'
 require './src/event/text/text_new_func'
 require './src/class/ActionExam'
 require './src/class/ActionTimeTable'
+require './src/class/ActionEndTime'
 
 def client
   @client ||= Line::Bot::Client.new { |config|
@@ -46,7 +45,7 @@ post '/callback' do
         elsif event.message['text'] =~ /カンカン教えて？/
           help(event['replyToken'])
         elsif event.message['text'] =~ /何時まで？/
-          text_endtime(event)
+          ActionEndTime.new(event).text
         elsif event.message['text'] =~ /バスの時間は？/
           text_bus(event)
         elsif event.message['text'] =~ /新機能は？/

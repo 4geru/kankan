@@ -17,20 +17,16 @@ class ActionTimeTable < Action
     grade = @room["grade"]
     date = "#{t.year}/#{(t.month == 12 ? "0" : t.month)}/#{t.day}"
 
-    lectures = Day.find_by({department: dept, grade: grade, date: date })
+    Day.find_by({department: dept, grade: grade, date: date })
   end
 
   def get_message(data)
-    dept  = @room["department"]
-    grade = @room["grade"]
-    p data
     t =  Time.new() #  data["order"] == 'today'
     if data["order"] == "calendar"
       y, m, d = @event["postback"]["params"]["date"].split('-')
       t = Time.new(y, m, d)
     end
-    array = get_array(t)
-    get_message_timetable(t, array)
+    get_message_timetable(t, get_array(t))
   end
 
   def get_message_timetable(t, array)
