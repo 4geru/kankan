@@ -16,7 +16,7 @@ def postback(event)
       kango_grade(event)
     end
   when 'timetable'
-    postback_timetable(event, data)
+    ActionTimeTable.new(event).get_detail(data)
   when 'endTime'
     postback_endtime(event, data)
   when 'exam'

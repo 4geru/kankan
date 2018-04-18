@@ -13,6 +13,7 @@ require './src/event/text/text_timetable'
 require './src/event/text/text_update'
 require './src/event/text/text_new_func'
 require './src/class/ActionExam'
+require './src/class/ActionTimeTable'
 
 def client
   @client ||= Line::Bot::Client.new { |config|
@@ -39,7 +40,7 @@ post '/callback' do
       when Line::Bot::Event::MessageType::Text
         selectCollege(event) if not room
         if event.message['text'] =~ /時間割教えて？/
-          text_timetable(event)
+          ActionTimeTable.new(event).text
         elsif event.message['text'] =~ /テスト教えて？/
           ActionExam.new(event).text
         elsif event.message['text'] =~ /カンカン教えて？/

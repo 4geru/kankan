@@ -36,7 +36,7 @@ class Action
   def get_header(t)
     dept  = (@room["department"] == 'igaku' ? '医学科' : '看護学科')
     grade = @room["grade"]
-    "#{t.month}月#{t.day}日 (#{weekName(t.wday)}) #{dept} #{grade}年生\n"
+    "#{t.month}月#{t.day}日 (#{weekName(t.wday)}) #{dept} #{grade}年生"
   end
 
   def get_detail(t)
