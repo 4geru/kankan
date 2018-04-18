@@ -1,5 +1,3 @@
-require './src/event/postback/postback_endtime'
-
 def postback(event)
   data = Hash[URI::decode_www_form(event["postback"]["data"])]
 

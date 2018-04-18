@@ -9,6 +9,14 @@ class Action
     @jp_type2 = ""#"テスト期間"
   end
 
+  def get_array(t)
+    dept  = @room["department"]
+    grade = @room["grade"]
+    date = "#{t.year}/#{(t.month == 12 ? "0" : t.month)}/#{t.day}"
+
+    Day.find_by({department: dept, grade: grade, date: date })
+  end
+
   def postback(data)
     t =  Time.new() #  data["order"] == 'today'
     if data["order"] == "calendar"
@@ -39,10 +47,16 @@ class Action
     "#{t.month}月#{t.day}日 (#{weekName(t.wday)}) #{dept} #{grade}年生"
   end
 
-  def get_detail(t)
-    dept  = @room["department"]
-    grade = @room["grade"]
+  def get_detail(data)
+    client.reply_message(@token,{ type: 'text', text: get_message(data) })
+  end
 
-    get_header(t) + ""
+  def get_message(data)
+    t =  Time.new() #  data["order"] == 'today'
+    if data["order"] == "calendar"
+      y, m, d = @event["postback"]["params"]["date"].split('-')
+      t = Time.new(y, m, d)
+    end
+    get_init_message(t, get_array(t))
   end
 end

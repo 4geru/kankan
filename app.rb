@@ -7,7 +7,6 @@ require 'line/bot'
 require './src/class/MessageButton'
 require './src/class/MessageCarousel'
 require './src/class/MessageConfirm'
-require './lib'
 require './scrayping'
 require 'dotenv'
 Dotenv.load

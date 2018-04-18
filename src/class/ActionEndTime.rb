@@ -8,28 +8,7 @@ class ActionEndTime < Action
     @jp_type2 = "終了時間"
   end
 
-  def get_detail(data)
-    client.reply_message(@token,{ type: 'text', text: get_message(data) })
-  end
-
-  def get_array(t)
-    dept  = @room["department"]
-    grade = @room["grade"]
-    date = "#{t.year}/#{(t.month == 12 ? "0" : t.month)}/#{t.day}"
-
-    lectures = Day.find_by({department: dept, grade: grade, date: date })
-  end
-
-  def get_message(data)
-    t =  Time.new() #  data["order"] == 'today'
-    if data["order"] == "calendar"
-      y, m, d = @event["postback"]["params"]["date"].split('-')
-      t = Time.new(y, m, d)
-    end
-    get_message_endtime(t, get_array(t))
-  end
-
-  def get_message_endtime(t, array)
+  def get_init_message(t, array)
     return "#{get_header(t)}\n#{array['reason']}です" if array['isHoliday']
     lectures = eval(array['timetable'])
     last_period = lectures.select{|l| l["title"] != "" }.max{|a,b| a["period"] <=> b["period"] }

@@ -8,10 +8,6 @@ class ActionExam < Action
     @jp_type2 = "テスト期間"
   end
 
-  def get_detail(data)
-    client.reply_message(@token,{ type: 'text', text: get_message(data) })
-  end
-
   def get_grade_header
     dept  = (@room["department"] == 'igaku' ? '医学科' : '看護学科')
     grade = @room["grade"]
@@ -26,30 +22,17 @@ class ActionExam < Action
   end
 
   def get_array(t)
-    dept  = @room["department"]
-    grade = @room["grade"]
-
     ([1] * 14)
     .inject([0]){|b, i| b << (b[-1] + 1)} # 0-14の配列を作る
     .map{ |i|
       dday = t + i.day
       date = "#{dday.year}/#{(dday.month == 12 ? "0" : dday.month)}/#{dday.day}"
-      ret = Exam.where({department: dept, grade: grade, date: date })
+      ret = Exam.where({department: @room["department"], grade: @room["grade"], date: date })
     }
   end
 
-  def get_message(data)
-    t =  Time.new() #  data["order"] == 'today'
-    if data["order"] == "calendar"
-      y, m, d = @event["postback"]["params"]["date"].split('-')
-      t = Time.new(y, m, d)
-    end
-    array = get_array(t)
+  def get_init_message(t, array)
     return "#{get_grade_header}直近2週間にテストはありません" if array.flatten!.empty?
-    get_message_exam(t, array)
-  end
-
-  def get_message_exam(t, array)
     get_grade_header + array.map{|exam|
       table = eval(exam['timetable']).map{|time|
         "#{time['period']}限目 #{time['title']} \u{1F6A9} #{time['room']}\n  \u{1F4D4}  #{time['subtitle']}\n  \u{1F468}  #{time['professor']}"
